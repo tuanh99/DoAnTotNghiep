@@ -6,7 +6,9 @@ use App\Http\Controllers\Admin\MainController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\SliderController;
+use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\BmiController;
+use App\Http\Controllers\PostController;
 
 use App\Http\Controllers\ProductController;
 
@@ -51,15 +53,17 @@ Route::middleware(['auth'])->group(function () {
             Route::post('edit/{slider}', [SliderController::class, 'update']);
             Route::DELETE('destroy', [SliderController::class, 'destroy']);
         });
-        // #Blog
-        // Route::prefix('blogs')->group(function () {
-        //     Route::get('add', [SliderController::class, 'create']);
-        //     Route::post('add', [SliderController::class, 'store']);
-        //     Route::get('list', [SliderController::class, 'index']);
-        //     Route::get('edit/{blog}', [SliderController::class, 'show']);
-        //     Route::post('edit/{blog}', [SliderController::class, 'update']);
-        //     Route::DELETE('destroy', [SliderController::class, 'destroy']);
-        // });
+
+        #Posts
+        Route::prefix('posts')->group(function () {
+            Route::get('add', [AdminPostController::class, 'create']);
+            Route::post('add', [AdminPostController::class, 'store'])->name('posts.add');
+            Route::get('list', [AdminPostController::class, 'index']);
+            Route::get('edit/{post}', [AdminPostController::class, 'show']);
+            Route::post('edit/{post}', [AdminPostController::class, 'update']);
+            Route::DELETE('destroy', [AdminPostController::class, 'destroy']);
+        });
+
         #Upload
         Route::post('upload/services', [\App\Http\Controllers\Admin\UploadController::class, 'store']);
 
@@ -91,3 +95,6 @@ Route::get('/products/{id}', [ProductController::class, 'show'])->name('products
 // Route::get('/products', [ProductController::class, 'list'])->name('products.index');
 Route::get('/search', [ProductController::class, 'search'])->name('product.search');
 // Route::get('/san-pham/{id}-{slug}.html', [ProductController::class, 'show'])->name('product.show');
+Route::get('post', [PostController::class, 'index'])->name('post');
+Route::get('bai-viet/{id}-{slug}.html', [App\Http\Controllers\PostController::class, 'index']);
+Route::get('/bai-viet/{id}-{slug}.html', [PostController::class, 'show'])->name('post.show');

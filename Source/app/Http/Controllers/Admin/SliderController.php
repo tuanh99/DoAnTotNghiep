@@ -19,7 +19,7 @@ class SliderController extends Controller
     public function create()
     {
         return view('admin.slider.add', [
-           'title' => 'Thêm SLider mới'
+           'title' => 'Thêm Slider mới'
         ]);
     }
 

@@ -135,13 +135,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="/admin/blogs/add" class="nav-link">
+                            <a href="/admin/posts/add" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Thêm Bài Viết</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/admin/blogs/list" class="nav-link">
+                            <a href="/admin/posts/list" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Danh Sách Bài Viết</p>
                             </a>

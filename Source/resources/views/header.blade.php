@@ -23,7 +23,7 @@
                         <li>
                             <a href="contact.html">Liên Hệ</a>
                         </li>
-                        <li><a href="https://thichgym.com/gymer-la-gi/">Blog</a></li>
+                        <li><a href="{{ route('post') }}">Bài Viết</a></li>
                         <li><a href="{{ route('bmi-caculator') }}">Tính chỉ số BMI</a></li>
                     </ul>
                 </div>
@@ -86,7 +86,7 @@
             <li>
                 <a href="contact.html">Liên Hệ</a>
             </li>
-            <li><a href="#">Blog</a></li>
+            <li><a href="{{ route('post') }}">Bài Viết</a></li>
             <li><a href="{{ route('bmi-caculator') }}">Tính chỉ số BMI</a></li>
         </ul>
     </div>
