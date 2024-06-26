@@ -1,7 +1,7 @@
 @extends('main')
 
 @section('content')
-    <form class="bg0 p-t-130 p-b-85" method="post">
+    <form class="bg0 p-t-130 p-b-85" method="post" id="orderForm">
         @include('admin.alert')
 
         @if (count($products) != 0)
@@ -43,8 +43,14 @@
                                                         <i class="fs-16 zmdi zmdi-minus"></i>
                                                     </div>
 
-                                                    <input class="mtext-104 cl3 txt-center num-product" type="number"
-                                                           name="num_product[{{ $product->id }}]" value="{{ $carts[$product->id] }}">
+                                                    <!-- <input class="mtext-104 cl3 txt-center num-product" type="number"
+                                                    name="num_product[{{ $product->id }}]" value="{{ $carts[$product->id] }}"
+                                                    min="1" max="{{ $product->stock }}" required> -->
+
+                                                 
+    <input class="mtext-104 cl3 txt-center num-product" type="number"
+           name="num_product[{{ $product->id }}]" value="{{ $carts[$product->id] }}"
+           min="1" max="{{ $product->stock }}" data-product-name="{{ $product->name }}" required>
 
                                                     <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
                                                         <i class="fs-16 zmdi zmdi-plus"></i>
@@ -123,9 +129,10 @@
                                 </div>
                             </div>
 
-                            <button class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+                            <!-- <button  class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
                                Đặt Hàng
-                            </button>
+                            </button> -->
+                            <input type="submit" class="flex-c-m stext-101 cl2 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer m-tb-10" value="Đặt hàng">
                         </div>
                     </div>
                 </div>
@@ -134,4 +141,79 @@
     @else
         <div class="text-center"><h2>Giỏ hàng trống</h2></div>
     @endif
+
+    <!-- <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Lấy tất cả các input số lượng
+        let quantityInputs = document.querySelectorAll('.num-product');
+        
+        // Lắng nghe sự kiện nhập trên các input số lượng để kiểm tra ngay khi nhập
+        quantityInputs.forEach(function(input) {
+            input.addEventListener('input', function() {
+                let max = parseInt(input.getAttribute('max'));
+                let value = parseInt(input.value);
+
+                if (value > max) {
+                    alert('Số lượng sản phẩm vượt quá số lượng tồn kho. Vui lòng nhập số lượng nhỏ hơn hoặc bằng ' + max);
+                    input.value = max; // Đặt lại giá trị về tối đa nếu vượt quá
+                }
+            });
+        });
+
+        // Kiểm tra khi submit form
+        let orderForm = document.querySelector('#orderForm'); // Form đã được thêm id là orderForm
+        if (orderForm) {
+            orderForm.addEventListener('submit', function(event) {
+                let hasError = false;
+                quantityInputs.forEach(function(input) {
+                    let max = parseInt(input.getAttribute('max'));
+                    let value = parseInt(input.value);
+                    
+                    if (value > max) {
+                        hasError = true;
+                        input.value = max; // Đặt lại giá trị về tối đa nếu vượt quá
+                        alert('Số lượng sản phẩm vượt quá số lượng tồn kho. Vui lòng điều chỉnh lại.');
+                    }
+                });
+
+                if (hasError) {
+                    event.preventDefault(); // Ngăn chặn việc submit form nếu có lỗi
+                }
+            });
+        }
+    });
+</script> -->
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Tìm form đặt hàng
+        let orderForm = document.getElementById('order-form');
+
+        orderForm.addEventListener('submit', function(event) {
+            // Duyệt qua tất cả các input số lượng
+            let quantityInputs = document.querySelectorAll('.num-product');
+            let hasError = false;
+            let errorMessages = [];
+
+            quantityInputs.forEach(function(input) {
+                let max = parseInt(input.getAttribute('max'));
+                let value = parseInt(input.value);
+
+                if (value > max) {
+                    hasError = true;
+                    let productName = input.getAttribute('data-product-name'); // Lấy tên sản phẩm từ thuộc tính data
+                    errorMessages.push('Số lượng sản phẩm "' + productName + '" vượt quá số lượng tồn kho. Tối đa là ' + max);
+                }
+            });
+
+            if (hasError) {
+                // Ngăn chặn form gửi đi
+                event.preventDefault();
+                alert(errorMessages.join('\n')); // Hiển thị tất cả lỗi trong alert
+            }
+        });
+    });
+</script>
+
+
 @endsection

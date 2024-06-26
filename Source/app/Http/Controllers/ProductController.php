@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Services\Product\ProductService;
-
+use App\Models\Product;
+use Illuminate\Support\Str;
 class ProductController extends Controller
 {
     protected $productService;
@@ -29,20 +30,16 @@ class ProductController extends Controller
 
     //chat
 
-    //  // Danh sách sản phẩm và tìm kiếm
-    //  public function list(Request $request)
-    //  {
-    //      // Lấy từ khóa tìm kiếm từ request
-    //      $search = $request->query('search');
- 
-    //      // Gọi đến phương thức search trong ProductService với từ khóa tìm kiếm
-    //      $products = $this->productService->search($search);
- 
-    //      // Trả về view với danh sách sản phẩm và từ khóa tìm kiếm (nếu có)
-    //      return view('products.index', [
-    //          'title' => $search ? "Kết quả tìm kiếm cho: $search" : 'Danh Sách Sản Phẩm',
-    //          'products' => $products,
-    //          'search' => $search
-    //      ]);
-    //  }
+    public function search(Request $request)
+    {
+        $query = $request->input('search');
+        $products = $this->productService->search($query);
+    
+        return view('products.search-results', [
+            'title' => "Kết quả tìm kiếm cho: $query",
+            'products' => $products,
+            'query' => $query
+        ]);
+
+    }
 }

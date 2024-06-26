@@ -42,7 +42,14 @@
                     </div>
                 </div>
             </div>
-
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="menu">Số Lượng</label>
+                        <input type="number" name="stock" value="{{ old('stock') }}" class="form-control">
+                    </div>
+                </div>
+            </div>
             <div class="form-group">
                 <label>Mô Tả </label>
                 <textarea name="description" class="form-control">{{ old('description') }}</textarea>

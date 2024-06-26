@@ -27,7 +27,7 @@
          <!-- chatt -->
         <div class="header-cart-content flex-w js-pscroll">
             @php $sumPriceCart = 0; @endphp
-            <ul class="header-cart-wrapitem w-full">
+            <!-- <ul class="header-cart-wrapitem w-full">
                 @if (count($products) > 0)
                     @foreach($products as $key => $product)
                         @php
@@ -52,7 +52,40 @@
                     @endforeach
                 @endif
 
-            </ul>
+            </ul> -->
+
+            <ul class="header-cart-wrapitem w-full">
+    @if (count($products) > 0)
+        @foreach($products as $key => $product)
+            @php
+                $price = \App\Helpers\Helper::price($product->price, $product->price_sale);
+                
+                $sumPriceCart += $product->price_sale != 0 ? $product->price_sale : $product->price;
+            @endphp
+            <li class="header-cart-item flex-w flex-t m-b-12">
+                <div class="header-cart-item-img">
+                    <img src="{{ $product->thumb }}" alt="IMG">
+                </div>
+                <div class="header-cart-item-txt p-t-8">
+                    <a href="#" class="header-cart-item-name m-b-18 hov-cl1 trans-04">
+                        {{ $product->name }}
+                    </a>
+                    <span class="header-cart-item-info">
+                        {!! $price !!}
+                    </span>
+                </div>
+            </li>
+        @endforeach
+    @else
+        <li class="header-cart-item flex-w flex-t m-b-12">
+            <div class="header-cart-item-txt p-t-8">
+                <span class="header-cart-item-name m-b-18 hov-cl1 trans-04">
+                    Giỏ hàng của bạn hiện đang trống.
+                </span>
+            </div>
+        </li>
+    @endif
+</ul>
 
             <div class="w-full">
                 <div class="header-cart-total w-full p-tb-40">

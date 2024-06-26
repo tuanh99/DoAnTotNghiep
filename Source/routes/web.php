@@ -4,9 +4,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Users\LoginController;
 use App\Http\Controllers\Admin\MainController;
 use App\Http\Controllers\Admin\MenuController;
-use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\BmiController;
+
+use App\Http\Controllers\ProductController;
+
+Route::get('/search', [ProductController::class, 'search'])->name('product.search');
 
 Route::get('admin/users/login', [LoginController::class, 'index'])->name('login');
 Route::post('admin/users/login/store', [LoginController::class, 'store']);
@@ -30,12 +34,12 @@ Route::middleware(['auth'])->group(function () {
 
         #Product
         Route::prefix('products')->group(function () {
-            Route::get('add', [ProductController::class, 'create']);
-            Route::post('add', [ProductController::class, 'store']);
-            Route::get('list', [ProductController::class, 'index']);
-            Route::get('edit/{product}', [ProductController::class, 'show']);
-            Route::post('edit/{product}', [ProductController::class, 'update']);
-            Route::DELETE('destroy', [ProductController::class, 'destroy']);
+            Route::get('add', [AdminProductController::class, 'create']);
+            Route::post('add', [AdminProductController::class, 'store']);
+            Route::get('list', [AdminProductController::class, 'index']);
+            Route::get('edit/{product}', [AdminProductController::class, 'show']);
+            Route::post('edit/{product}', [AdminProductController::class, 'update']);
+            Route::DELETE('destroy', [AdminProductController::class, 'destroy']);
         });
 
         #Slider
@@ -47,7 +51,15 @@ Route::middleware(['auth'])->group(function () {
             Route::post('edit/{slider}', [SliderController::class, 'update']);
             Route::DELETE('destroy', [SliderController::class, 'destroy']);
         });
-
+        // #Blog
+        // Route::prefix('blogs')->group(function () {
+        //     Route::get('add', [SliderController::class, 'create']);
+        //     Route::post('add', [SliderController::class, 'store']);
+        //     Route::get('list', [SliderController::class, 'index']);
+        //     Route::get('edit/{blog}', [SliderController::class, 'show']);
+        //     Route::post('edit/{blog}', [SliderController::class, 'update']);
+        //     Route::DELETE('destroy', [SliderController::class, 'destroy']);
+        // });
         #Upload
         Route::post('upload/services', [\App\Http\Controllers\Admin\UploadController::class, 'store']);
 
@@ -76,4 +88,6 @@ Route::get('/products/{id}', [ProductController::class, 'show'])->name('products
 
 
 // Route cho danh sách sản phẩm và tìm kiếm
-Route::get('/products', [ProductController::class, 'list'])->name('products.index');
+// Route::get('/products', [ProductController::class, 'list'])->name('products.index');
+Route::get('/search', [ProductController::class, 'search'])->name('product.search');
+// Route::get('/san-pham/{id}-{slug}.html', [ProductController::class, 'show'])->name('product.show');

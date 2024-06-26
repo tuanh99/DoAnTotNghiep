@@ -9,8 +9,9 @@
             <th>Danh Mục</th>
             <th>Giá Gốc</th>
             <th>Giá Khuyến Mãi</th>
-            <th>Active</th>
-            <th>Update</th>
+            <th>Kho</th>
+            <th>Trạng Thái</th>
+            <th>Cập Nhật</th>
             <th style="width: 100px">&nbsp;</th>
         </tr>
         </thead>
@@ -23,6 +24,7 @@
                 <td>{{ $product->menu->name }}</td>
                 <td>{{ $product->price }}</td>
                 <td>{{ $product->price_sale }}</td>
+                <td>{{ $product->stock }}</td>
                 <td>{!! \App\Helpers\Helper::active($product->active) !!}</td>
                 <td>{{ $product->updated_atformat }}</td>
                 <td>

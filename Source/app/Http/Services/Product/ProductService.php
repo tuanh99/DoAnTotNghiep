@@ -38,18 +38,10 @@ class ProductService
             ->limit(8)
             ->get();
     }
-
-
-    //  chat
-    // Phương thức tìm kiếm sản phẩm
-    // public function search($search = null)
-    // {
-    //     return Product::select('id', 'name', 'price', 'price_sale', 'thumb')
-    //         ->when($search, function ($query) use ($search) {
-    //             $query->where('name', 'like', '%' . $search . '%')
-    //                   ->orWhere('description', 'like', '%' . $search . '%');
-    //         })
-    //         ->orderByDesc('id')
-    //         ->paginate(self::LIMIT); // Sử dụng phân trang cho kết quả tìm kiếm
-    // }
+    public function search($query)
+{
+    return Product::where('name', 'like', "%{$query}%")
+                  ->orWhere('description', 'like', "%{$query}%")
+                  ->get();
+}
 }
