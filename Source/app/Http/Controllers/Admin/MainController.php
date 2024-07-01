@@ -7,6 +7,7 @@ use App\Http\Services\CartService;
 use Illuminate\Http\Request;
 use App\Models\Customer;
 use App\Models\Cart;
+use App\Models\Product;
 class MainController extends Controller
 
 {
@@ -29,20 +30,29 @@ class MainController extends Controller
         $totalSalesCompleted = Cart::whereHas('customer', function($query) {
             $query->where('status', 'Đã giao thành công');
         })->sum('price');
-        // Lấy danh sách các đơn hàng và tính tổng số tiền cho mỗi đơn hàng
-            
+        
+        $topSellingProducts = $this->topSellingProducts();
         return view('admin.home', [
            'title' => 'Trang Quản Trị Admin',
            'totalCustomers' => $totalCustomers,
            'totalOrders' => $totalOrders,
             'totalSales' => $totalSales,
             'totalSalesCompleted' => $totalSalesCompleted,
-            'customers' => $this->cart->getCustomer()->take(5)
+            'topSellingProducts' => $topSellingProducts,
+            'customers' => $this->cart->getCustomer()->take(6)
         ]);
 
 
     }
-
+    public function topSellingProducts()
+    {
+        return Product::select('products.id', 'products.name', \DB::raw('SUM(carts.pty) as total_sold'))
+            ->join('carts', 'products.id', '=', 'carts.product_id')
+            ->groupBy('products.id', 'products.name')
+            ->orderByDesc('total_sold')
+            ->limit(5)
+            ->get();
+    }
 
     // public function show(Customer $customer)
     // {

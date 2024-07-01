@@ -40,35 +40,71 @@
 
 
 <div class="container">
-    <h2 style="text-align: center; font-weight: 550; font-size: 25px">Đơn hàng gần đây</h2>
-    <table class="table">
-        
-        <thead>
-            <tr>
-                
-                <th>Ngày đặt hàng</th>
-                <th>Tên khách hàng</th>
-                <th>SĐT</th>
-                <!-- <th>Tổng</th> -->
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($customers as $customer)
-            <tr>
-                <td>{{ $customer->created_at->setTimezone('Asia/Ho_Chi_Minh')->format('d/m/Y H:i:s') }}</td>
-                <td>{{ $customer->name }}</td>
-                <td>{{ $customer->phone }}</td>
-                
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+    <div class= "recent-order">
+        <h2 style="text-align: center; font-weight: 550; font-size: 25px">Đơn hàng gần đây</h2>
+        <table class="table" style="width= 42vw">
+            <thead>
+                <tr>
+                    
+                    <th>Ngày đặt hàng</th>
+                    <th>Tên khách hàng</th>
+                    <th>SĐT</th>
+                    <!-- <th>Tổng</th> -->
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($customers as $customer)
+                <tr>
+                    <td>{{ $customer->created_at->setTimezone('Asia/Ho_Chi_Minh')->format('d/m/Y H:i:s') }}</td>
+                    <td>{{ $customer->name }}</td>
+                    <td>{{ $customer->phone }}</td>
+                    
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+    <!-- Hiển thị top 10 sản phẩm bán chạy -->
+    <div class="top-selling-products">
+        <h2 style="text-align: center; font-weight: 550; font-size: 25px">Top 5 Sản phẩm bán chạy</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Tên sản phẩm</th>
+                    <th style = "width: 100px">Đã bán</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($topSellingProducts as $index => $product)
+                    <tr>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $product->name }}</td>
+                        <td>{{ $product->total_sold }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+
 </div>
 
+
+
+
 <style>
+    .container{
+        display: flex;
+        /* flex-wrap: wrap; */
+        justify-content : space-around;
+      
+    }
 .table{
     /* height: 900px; */
     background-color: #fff;
+    width: 35vw;
+    text-align: center;
+   
 }
     /* Đặt CSS cho toàn bộ thẻ dashboard */
 .dashboard-cards {
