@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Models\Invoice;
 use Illuminate\Http\Request;
 use App\Http\Services\CartService;
 use Illuminate\Support\Facades\Session;
@@ -127,6 +127,12 @@ class CartController extends Controller
 
         $this->infoProductCart($carts, $customer->id);
 
+        // Tạo hóa đơn và lưu trạng thái
+        $invoice = Invoice::create([
+            'customer_id' => $customer->id,
+            'status' => $request->input('status'), // Chọn trạng thái từ form
+            // 'total' => $this->infoProductCart($carts, $customer->id)['total'] // Tổng số tiền của hóa đơn
+        ]);
         DB::commit();
         Session::flash('success', 'Đặt hàng thành công');
         SendMail::dispatch($request->input('email'))->delay(now()->addSeconds(2));

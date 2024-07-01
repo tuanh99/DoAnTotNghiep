@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\PostController as AdminPostController;
+use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\BmiController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProductController;
@@ -100,3 +101,7 @@ Route::get('/search', [ProductController::class, 'search'])->name('product.searc
 Route::get('post', [PostController::class, 'index'])->name('post');
 Route::get('bai-viet/{id}-{slug}.html', [App\Http\Controllers\PostController::class, 'index']);
 Route::get('/bai-viet/{id}-{slug}.html', [PostController::class, 'show'])->name('post.show');
+// Route::post('/admin/invoices/status/{id}', [InvoiceController::class, 'updateStatus']);
+Route::post('/admin/customers/update-status/{customer}', [App\Http\Controllers\Admin\CustomerController::class, 'updateStatus'])->name('customers.update-status');
+// Route::put('/admin/customers/update-status/{customer}', 'CustomerController@updateStatus')->name('customers.update-status');
+// Route::post('/admin/customers/update-status/{customer}', 'CustomerController@updateStatus')->name('customers.update-status');

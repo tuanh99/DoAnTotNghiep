@@ -14,11 +14,20 @@ class Customer extends Model
         'phone',
         'address',
         'email',
-        'content'
+        'content',
+        'status'
+    ];
+    protected $attributes = [
+        'status' => 'Đang chuẩn bị', 
     ];
 
     public function carts()
     {
         return $this->hasMany(Cart::class, 'customer_id', 'id');
     }
+    public function invoices()
+{
+    return $this->hasMany(Invoice::class);
+}
+
 }

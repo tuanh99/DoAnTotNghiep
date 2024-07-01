@@ -31,7 +31,7 @@
         </div>
         <div class="card-content">
             <h2>Tổng doanh thu</h2>
-            <p>{{ number_format($totalSales, '0', '', '.') }}</p>
+            <p>{{ number_format($totalSalesCompleted, '0', '', '.') }}</p>
 
             <h2>Tính đến thời điểm hiện tại</h2>
         </div>

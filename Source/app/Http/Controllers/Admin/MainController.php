@@ -25,6 +25,10 @@ class MainController extends Controller
         // Tính tổng doanh thu từ các đơn hàng
         $totalSales = Cart::sum('price');
 
+        // Tính tổng doanh thu từ các đơn hàng có trạng thái "Đã giao thành công"
+        $totalSalesCompleted = Cart::whereHas('customer', function($query) {
+            $query->where('status', 'Đã giao thành công');
+        })->sum('price');
         // Lấy danh sách các đơn hàng và tính tổng số tiền cho mỗi đơn hàng
             
         return view('admin.home', [
@@ -32,7 +36,7 @@ class MainController extends Controller
            'totalCustomers' => $totalCustomers,
            'totalOrders' => $totalOrders,
             'totalSales' => $totalSales,
-          
+            'totalSalesCompleted' => $totalSalesCompleted,
             'customers' => $this->cart->getCustomer()->take(5)
         ]);
 

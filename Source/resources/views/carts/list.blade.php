@@ -139,50 +139,8 @@
             </div>
         </form>
     @else
-        <div class="text-center"><h2>Giỏ hàng trống</h2></div>
+        <div class="text-center" style="margin-bottom: 50px"><h2>Giỏ hàng trống</h2></div>
     @endif
-
-    <!-- <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Lấy tất cả các input số lượng
-        let quantityInputs = document.querySelectorAll('.num-product');
-        
-        // Lắng nghe sự kiện nhập trên các input số lượng để kiểm tra ngay khi nhập
-        quantityInputs.forEach(function(input) {
-            input.addEventListener('input', function() {
-                let max = parseInt(input.getAttribute('max'));
-                let value = parseInt(input.value);
-
-                if (value > max) {
-                    alert('Số lượng sản phẩm vượt quá số lượng tồn kho. Vui lòng nhập số lượng nhỏ hơn hoặc bằng ' + max);
-                    input.value = max; // Đặt lại giá trị về tối đa nếu vượt quá
-                }
-            });
-        });
-
-        // Kiểm tra khi submit form
-        let orderForm = document.querySelector('#orderForm'); // Form đã được thêm id là orderForm
-        if (orderForm) {
-            orderForm.addEventListener('submit', function(event) {
-                let hasError = false;
-                quantityInputs.forEach(function(input) {
-                    let max = parseInt(input.getAttribute('max'));
-                    let value = parseInt(input.value);
-                    
-                    if (value > max) {
-                        hasError = true;
-                        input.value = max; // Đặt lại giá trị về tối đa nếu vượt quá
-                        alert('Số lượng sản phẩm vượt quá số lượng tồn kho. Vui lòng điều chỉnh lại.');
-                    }
-                });
-
-                if (hasError) {
-                    event.preventDefault(); // Ngăn chặn việc submit form nếu có lỗi
-                }
-            });
-        }
-    });
-</script> -->
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
