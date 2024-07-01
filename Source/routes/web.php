@@ -9,8 +9,10 @@ use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\BmiController;
 use App\Http\Controllers\PostController;
-
 use App\Http\Controllers\ProductController;
+
+
+
 
 Route::get('/search', [ProductController::class, 'search'])->name('product.search');
 

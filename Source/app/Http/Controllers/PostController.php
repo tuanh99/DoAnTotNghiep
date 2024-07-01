@@ -1,23 +1,4 @@
 <?php
-
-// namespace App\Http\Controllers;
-
-// use Illuminate\Http\Request;
-
-// class PostController extends Controller
-// {
-//     public function index()
-//     {
-//        return view('post',[
-//         'title' => 'Bài Viết Về Tập Luyện'
-//        ]);
-//     }
-
-// }
-
-
-
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -35,23 +16,27 @@ class PostController extends Controller
 
     public function index($id = '', $slug = '')
     {
-        $post = $this->postService->getAllPosts($id);
-        $posts = Post::orderBy('created_at', 'desc')->get(); 
-        return view('posts.list',compact('post'), [
+        $posts = Post::orderBy('created_at', 'desc')->get();
+        return view('posts.list', [
             'title' => 'Bài Viết',
-            'post' => $post,
+            'posts' => $posts,
         ]);
     }
-    public function show($id, $slug)
+
+    public function show($id)
 {
     try {
-        $post = $this->postService->get($id);
+        // Tìm bài viết với ID cụ thể
+        $posts = Post::findOrFail($id);
+
+        // Trả về view với dữ liệu bài viết
         return view('posts.content', [
-            'title' => 'Chi tiết bài viết',
-            'post' => $post,
+            'title' => $posts->name,
+            'posts' => $posts
         ]);
     } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-        abort(404); // Xử lý khi không tìm thấy bài viết, có thể chuyển hướng hoặc hiển thị lỗi 404
+        // Nếu không tìm thấy bài viết, trả về lỗi 404
+        abort(404);
     }
 }
 }

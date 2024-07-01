@@ -38,10 +38,34 @@ class ProductService
             ->limit(8)
             ->get();
     }
-    public function search($query)
+    // public function search($query)
+// {
+//     return Product::where('name', 'like', "{$query}%")
+//                 //   ->orWherse('description', 'like', "%{$query}%")
+//                   ->get();
+// }
+// }
+
+// public function search($query)
+// {
+//     // Tách từ khóa thành các từ riêng biệt
+//     $keywords = explode(' ', $query);
+
+//     return Product::where(function ($queryBuilder) use ($keywords) {
+//         foreach ($keywords as $keyword) {
+//             $queryBuilder->where('name', 'like', "%{$keyword}%");
+                         
+//         }
+//     })->get();
+// }
+
+
+public function search($query)
 {
-    return Product::where('name', 'like', "%{$query}%")
-                  ->orWhere('description', 'like', "%{$query}%")
+    // Thay thế khoảng trắng trong từ khóa bằng %
+    $keyword = str_replace(' ', '%', $query);
+
+    return Product::where('name', 'like', "%{$keyword}%")
                   ->get();
 }
 }

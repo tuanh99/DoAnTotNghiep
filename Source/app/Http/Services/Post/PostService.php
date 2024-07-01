@@ -7,63 +7,43 @@ use App\Models\Post;
 use Illuminate\Support\Facades\Log;
 class PostService
 {
-    public function insert($request)
-    {
-        try {
-            #$request->except('_token');
-            Post::create($request->input());
-            Session::flash('success', 'Thêm Bài Viết thành công');
-        } catch (\Exception $err) {
-            Session::flash('error', 'Thêm Bài Viết LỖI');
-            Log::info($err->getMessage());
-
-            return false;
-        }
-
-        return true;
-    }
-
+   
     public function get()
     {
-        return Post::orderByDesc('id')->paginate(15);
+        // return Post::orderByDesc('id');
+        return Post::select('id', 'name', 'content','thumb')
+            ->orderByDesc('id');
     }
-
-
-    public function update($request, $post)
-    {
-        try {
-            $post->fill($request->input());
-            $post->save();
-            Session::flash('success', 'Cập nhật Bài Viết thành công');
-        } catch (\Exception $err) {
-            Session::flash('error', 'Cập nhật Bài Viết Lỗi');
-            Log::info($err->getMessage());
-
-            return false;
-        }
-
-        return true;
-    }
-
-    public function destroy($request)
-    {
-        $post = Post::where('id', $request->input('id'))->first();
-        if ($post) {
-            // $path = str_replace('storage', 'public', $post->thumb);
-            // Storage::delete($path);
-            $post->delete();
-            return true;
-        }
-
-        return false;
-    }
-
-    // public function show()
-    // {
-    //     return Post::where('active', 1)->orderByDesc('sort_by')->get();
-    // }
+    
     public function getAllPosts()
 {
     return Post::all();
 }
+
+public function show($id)
+{
+    return Post::where('id', $id)
+        ->where('active', 1)
+        ->with('menu')
+        ->firstOrFail();
+}
+
+
+//     public function show($id, $slug)
+// {
+//     try {
+//         // Tìm bài viết với ID cụ thể
+//         $posts = Post::findOrFail($id);
+
+//         // Trả về view với dữ liệu bài viết
+//         return view('posts.content', [
+//             'title' => $posts->name,
+//             'posts' => $posts
+//         ]);
+//     } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+//         // Nếu không tìm thấy bài viết, trả về lỗi 404
+//         abort(404);
+//     }
+// }
+
 }

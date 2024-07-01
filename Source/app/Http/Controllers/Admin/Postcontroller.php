@@ -5,12 +5,12 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Http\Controllers\Controller;
-use App\Http\Services\Post\PostService;
+use App\Http\Services\Post\PostAdminService;
 class PostController extends Controller
 {
     protected $post;
 
-    public function __construct(PostService $post)
+    public function __construct(PostAdminService $post)
     {
         $this->post = $post;
     }

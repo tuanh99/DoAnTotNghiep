@@ -42,24 +42,27 @@
                     <!-- left column -->
                     <div class="col-md-12">
                         <!-- jquery validation -->
-                        <div class="card card-primary mt-3">
+                        <!-- <div class="card card-primary mt-3">
                             <div class="card-header">
                                 <h3 class="card-title">{{ $title }}</h3>
                             </div>
 
-                            @yield('content')
+                       
 
-                        </div>
+                        </div> -->
                         <!-- /.card -->
+                        @yield('content')
                     </div>
+                    
                     <!--/.col (left) -->
                     <!-- right column -->
                     <div class="col-md-6">
-
+                   
                     </div>
                     <!--/.col (right) -->
                 </div>
                 <!-- /.row -->
+                
             </div><!-- /.container-fluid -->
         </section>
         <!-- /.content -->
