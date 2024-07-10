@@ -1,16 +1,23 @@
 @component('mail::message')
 # Chúc mừng, Đơn hàng của bạn đã được tạo thành công!
 
-Xin chào {{ $order->customer_name }},
+Xin chào {{ $customer->name }},
 
 Đơn hàng của bạn đã được tạo thành công với các thông tin sau:
-- Tên khách hàng: {{ $order->customer_name }}
-- Email: {{ $order->customer_email }}
-- Điện thoại: {{ $order->customer_phone }}
-- Địa chỉ: {{ $order->customer_address }}
-- Ghi chú: {{ $order->note }}
+- Tên khách hàng: {{ $customer->name }}
+- Email: {{ $customer->email }}
+- Điện thoại: {{ $customer->phone }}
+- Địa chỉ: {{ $customer->address }}
+- Ghi chú: {{ $customer->content }}
+- Trạng thái đơn hàng: {{ $customer->status }}
 
-Tổng tiền đơn hàng: {{ number_format($order->total, 0, ',', '.') }} VNĐ
+@foreach ($orderDetails as $item)
+- Tên sản phẩm: {{ $item['product_name'] }}
+- Số lượng: {{ $item['quantity'] }}
+- Giá: {{ number_format($item['price'], 0, ',', '.') }} VNĐ
+@endforeach
+
+Tổng tiền đơn hàng: {{ number_format(array_sum(array_map(fn($item) => $item['price'] * $item['quantity'], $orderDetails)), 0, ',', '.') }} VNĐ
 
 Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi!
 

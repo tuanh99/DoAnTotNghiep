@@ -7,7 +7,15 @@
         <div class="row align-items-center">
             <div class="col-md-6">
                 <h1 class="mb-4 pt-5">TÍNH BMI (CHỈ SỐ KHỐI CƠ THỂ)</h1>
-                <p class="mb-4">Đo chỉ số BMI tại HealthyShapes để đánh giá mức độ béo, gầy hay cân nặng lý tưởng của bạn. HealthyShapes hỗ trợ hội viên đo chỉ số BMI trước và trong quá trình tập luyện để hội viên có thể theo dõi được kết quả tập luyện. BMI là chỉ số khối cơ thể (Body Mass Index), được các bác sĩ và chuyên gia sức khỏe dùng để xác định một người có bị béo phì, thừa cân hay quá gầy.</p>
+                <!-- <p class="mb-4">Đo chỉ số BMI tại HealthyShapes để đánh giá mức độ béo, gầy hay cân nặng lý tưởng của bạn. HealthyShapes hỗ trợ hội viên đo chỉ số BMI trước và trong quá trình tập luyện để hội viên có thể theo dõi được kết quả tập luyện. BMI là chỉ số khối cơ thể (Body Mass Index), được các bác sĩ và chuyên gia sức khỏe dùng để xác định một người có bị béo phì, thừa cân hay quá gầy.</p> -->
+                <p class="mb-4">BMI là gì?
+BMI là viết tắt của "Body Mass Index" (Chỉ số khối cơ thể), đây là một phép đo tiêu chuẩn được sử dụng để đánh giá mức độ cân đối giữa cân nặng và chiều cao của một người. Chỉ số BMI giúp bạn phân loại tình trạng sức khỏe của mình là mập, bình thường, thiếu cân hay ốm. Kết quả tính BMI online giúp bạn biết được cơ thể đang ở tình trạng nào từ đó điều chỉnh để khoẻ mạnh hơn.
+BMI được tính bằng công thức sau đây: BMI = Cân nặng/Chiều cao^2
+- Cân nặng tính theo kg
+- Chiều cao tính theo m</p>
+                <p class="mb-4">*Lưu ý:
+Công thức BMI được áp dụng cho cả nam và nữ, áp dụng cho người trưởng thành (trên 18 tuổi).
+Không áp dụng cho phụ nữ mang thai, vận động viên, người già và có sự thay đổi giữa các quốc gia.</p>
                 <form id="bmiForm" class="card p-4 shadow">
                     <div class="form-group">
                         <label for="height">Chiều Cao (cm):</label>
@@ -22,7 +30,7 @@
                 <div id="result" class="mt-4"></div>
             </div>
             <div class="col-md-6">
-                <img src="https://thethaodonga.com/wp-content/uploads/2022/01/anh-gym-nghe-thuat-30.jpg" alt="Ảnh gym" class="img-fluid" style="height: 100%;">
+                <img src="./template/images/img-product/bmi.jpg" alt="Ảnh gym" class="img-fluid" style="height: 100%;">
             </div>
         </div>
     </div>
@@ -125,13 +133,19 @@
 
         // Đưa ra đánh giá về BMI
         if (bmi < 18.5) {
-            result.innerHTML += "<br>Bạn đang dưới cân.";
-        } else if (bmi >= 18.5 && bmi < 24.9) {
+            result.innerHTML += "<br>Bạn đang gặp phải tình trạng thiếu cân, vì thế nên áp dụng các phương pháp ăn uống và luyện tập để tăng trọng lượng cơ thể.";
+        } else if (bmi >= 18.5 && bmi < 22.9) {
             result.innerHTML += "<br>Bạn có cân nặng bình thường.";
-        } else if (bmi >= 25 && bmi < 29.9) {
-            result.innerHTML += "<br>Bạn đang thừa cân.";
-        } else {
-            result.innerHTML += "<br>Bạn đang béo phì.";
+        } else if (bmi >= 23 && bmi < 24.9) {
+            result.innerHTML += "<br>Bạn đang trong tình trạng tiền béo phì, cần áp dụng thực đơn ăn kiêng hợp lý cùng việc luyện tập khoa học để lấy lại vóc dáng chuẩn nhất.";
+        } else if(bmi >= 25 && bmi < 29.9){
+            result.innerHTML += "<br>Bạn đang ở nhóm béo phì độ I. Béo phì là một tình trạng bạn có một lượng mỡ trong cơ thể cao hơn mức độ an toàn cho sức khỏe. Với tình trạng này kéo dài cơ thể bạn có thể gặp nhiều vấn đề về sức khỏe và cả sinh hoạt.";
+        }
+          else if(bmi >= 30 && bmi < 39.9){
+            result.innerHTML += "<br>Bạn đang ở nhóm béo phì độ II. Béo phì là một tình trạng bạn có một lượng mỡ trong cơ thể cao hơn mức độ an toàn cho sức khỏe. Với tình trạng này kéo dài cơ thể bạn có thể gặp nhiều vấn đề về sức khỏe và cả sinh hoạt.";
+        }
+        else{
+            result.innerHTML += "<br>Bạn đang ở nhóm béo phì độ III. Béo phì là một tình trạng bạn có một lượng mỡ trong cơ thể cao hơn mức độ an toàn cho sức khỏe. Với tình trạng này kéo dài cơ thể bạn có thể gặp nhiều vấn đề về sức khỏe và cả sinh hoạt.";
         }
     });
 </script>

@@ -22,6 +22,17 @@
                     <i class="fas fa-expand-arrows-alt"></i>
                 </a>
             </li>
+
+            <li class="nav-item">
+                <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
+                <a class="nav-link" href="{{ route('admin.logout') }}"
+                   onclick="event.preventDefault();
+                   document.getElementById('logout-form').submit();">
+                   <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                </a>
+            </li>
         </ul>
     </nav>
     <!-- /.navbar -->

@@ -13,6 +13,8 @@ class Product extends Model
         'name',
         'description',
         'content',
+        'size',
+        'color',
         'menu_id',
         'price',
         'price_sale',
@@ -29,6 +31,10 @@ class Product extends Model
 
     public function getUpdatedAtFormatAttribute()
     {
-        return $this->updated_at->format('d/m/Y H:i:s');
+        return $this->updated_at->setTimezone('Asia/Ho_Chi_Minh')->format('d/m/Y H:i:s');
+    }
+    public function carts()
+    {
+        return $this->hasMany(Cart::class, 'product_id');
     }
 }

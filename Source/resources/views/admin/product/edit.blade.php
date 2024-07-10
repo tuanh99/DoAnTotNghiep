@@ -64,7 +64,6 @@
                 <label>Mô Tả Chi Tiết</label>
                 <textarea name="content" id="content" class="form-control">{{ $product->content }}</textarea>
             </div>
-
             <div class="form-group">
                 <label for="menu">Ảnh Sản Phẩm</label>
                 <input type="file"  class="form-control" id="upload">

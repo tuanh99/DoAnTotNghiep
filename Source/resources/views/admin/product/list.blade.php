@@ -9,9 +9,39 @@
             <th>Danh Mục</th>
             <th>Giá Gốc</th>
             <th>Giá Khuyến Mãi</th>
-            <th>Kho</th>
+            <th>
+            <a href="{{ route('products.list', ['sort_by' => 'stock', 'sort_order' => request('sort_order') == 'asc' ? 'desc' : 'asc']) }}">
+        Kho
+        @if (request('sort_by') == 'stock')
+            @if (request('sort_order') == 'asc')
+                <i class="fas fa-sort-amount-up"></i>
+            @else
+                <i class="fas fa-sort-amount-down"></i>
+            @endif
+        @endif
+    </a>
+            </th>
+            <th><a href="{{ route('products.list', ['sort_by' => 'total_sold', 'sort_order' => request('sort_order') == 'asc' ? 'desc' : 'asc']) }}">
+        Đã Bán
+        @if (request('sort_by') == 'total_sold')
+            @if (request('sort_order') == 'asc')
+                <i class="fas fa-sort-amount-up"></i>
+            @else
+                <i class="fas fa-sort-amount-down"></i>
+            @endif
+        @endif
+    </a></th>
             <th>Trạng Thái</th>
-            <th>Cập Nhật</th>
+            <th><a href="{{ route('products.list', ['sort_by' => 'updated_at', 'sort_order' => request('sort_order') == 'asc' ? 'desc' : 'asc']) }}">
+        Cập Nhật
+        @if (request('sort_by') == 'updated_at')
+            @if (request('sort_order') == 'asc')
+                <i class="fas fa-sort-amount-up"></i>
+            @else
+                <i class="fas fa-sort-amount-down"></i>
+            @endif
+        @endif
+    </a></th>
             <th style="width: 100px">&nbsp;</th>
         </tr>
         </thead>
@@ -25,6 +55,8 @@
                 <td>{{ $product->price }}</td>
                 <td>{{ $product->price_sale }}</td>
                 <td>{{ $product->stock }}</td>
+                
+                <td>{{ $product->total_sold ?? 0}}</td>
                 <td>{!! \App\Helpers\Helper::active($product->active) !!}</td>
                 <td>{{ $product->updated_atformat }}</td>
                 <td>

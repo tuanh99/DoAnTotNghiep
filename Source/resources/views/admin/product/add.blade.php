@@ -38,7 +38,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="menu">Giá Giảm</label>
-                        <input type="number" name="price_sale" value="{{ old('price_sale') }}"  class="form-control" >
+                        <input type="number" name="price_sale" value="{{ old('price_sale') }}" class="form-control" >
                     </div>
                 </div>
             </div>
@@ -59,14 +59,13 @@
                 <label>Mô Tả Chi Tiết</label>
                 <textarea name="content" id="content" class="form-control">{{ old('content') }}</textarea>
             </div>
-
             <div class="form-group">
                 <label for="menu">Ảnh Sản Phẩm</label>
                 <input type="file"  class="form-control" id="upload" multiple>
                 <div id="image_show">
 
                 </div>
-                <input type="hidden" name="thumb" id="thumb">
+                <input type="hidden" name="thumb" id="thumb" value="{{ old('thumb') }}">
             </div>
 
             <div class="form-group">

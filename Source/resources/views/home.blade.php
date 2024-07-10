@@ -5,7 +5,6 @@
     <section class="section-slide">
         <div class="wrap-slick1">
             <div class="slick1">
-
                 @foreach($sliders as $slider)
 
                     <div class="item-slick1" style="background-image: url({{ $slider->thumb }});">
@@ -37,7 +36,10 @@
         </div>
     </section>
 
-
+    <!-- <form action="{{ route('user.logout') }}" method="POST">
+        @csrf
+        <button type="submit">Đăng xuất</button>
+    </form> -->
     <!-- Product -->
     <section class="bg0 p-t-23 p-b-140">
         <div class="container">

@@ -72,6 +72,7 @@
                 <tr>
                     <th>STT</th>
                     <th>Tên sản phẩm</th>
+                    <th>Danh mục</th>
                     <th style = "width: 100px">Đã bán</th>
                 </tr>
             </thead>
@@ -80,6 +81,7 @@
                     <tr>
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $product->name }}</td>
+                        <td>{{ $product->menu_name }}
                         <td>{{ $product->total_sold }}</td>
                     </tr>
                 @endforeach
@@ -104,6 +106,8 @@
     background-color: #fff;
     width: 35vw;
     text-align: center;
+    border-radius: 10px; /* Bo góc cho thẻ */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Đổ bóng */
    
 }
     /* Đặt CSS cho toàn bộ thẻ dashboard */

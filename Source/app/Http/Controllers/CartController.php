@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Customer;
+use App\Models\Product;
 
-use App\Models\Invoice;
 use Illuminate\Http\Request;
 use App\Http\Services\CartService;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 class CartController extends Controller
@@ -23,17 +25,31 @@ class CartController extends Controller
             return redirect()->back();
         }
 
-        return redirect('/carts');
+        // return redirect('/carts');
+        return redirect()->back()->withInput();
     }
+
+    // public function show()
+    // {
+    //     $products = $this->cartService->getProduct();
+
+    //     return view('carts.list', [
+    //         'title' => 'Giỏ Hàng',
+    //         'products' => $products,
+    //         'carts' => Session::get('carts')
+    //     ]);
+    // }
+
 
     public function show()
     {
         $products = $this->cartService->getProduct();
-
+        // $cartProducts = Session::get('carts', []); // Lấy giỏ hàng từ session, nếu không có thì trả về mảng rỗng
+    
         return view('carts.list', [
             'title' => 'Giỏ Hàng',
             'products' => $products,
-            'carts' => Session::get('carts')
+            'carts' => Session::get('carts') // Truyền giỏ hàng vào view
         ]);
     }
 
@@ -59,7 +75,8 @@ class CartController extends Controller
             return redirect()->back()->withInput();
         }
 
-        return redirect('/carts');
+        // return redirect('/carts');
+        return redirect()->back()->withInput();
     }
 
     // Chuyển hướng trở lại trang giỏ hàng với các giá trị input cũ
@@ -69,39 +86,43 @@ class CartController extends Controller
     public function remove($id = 0)
     {
         $this->cartService->remove($id);
-
         return redirect('/carts');
     }
     //chat
     public function placeOrder(Request $request)
-{
-    $carts = $request->input('num_product'); // Lấy số lượng từ request
-    foreach ($carts as $productId => $quantity) {
-        $product = Product::find($productId);
-        if ($product->stock < $quantity) {
-            return redirect()->back()->withErrors(['msg' => 'Số lượng sản phẩm ' . $product->name . ' vượt quá số lượng tồn kho.']);
+    {
+        $carts = $request->input('num_product'); // Lấy số lượng từ request
+        foreach ($carts as $productId => $quantity) {
+            $product = Product::find($productId);
+            if ($product->stock < $quantity) {
+                return redirect()->back()->withErrors(['msg' => 'Số lượng sản phẩm ' . $product->name . ' vượt quá số lượng tồn kho.']);
+            }
         }
-    }
 
     
-}
+    }
 //chatt
+    // public function addCart(Request $request)
+    // {
+    //     // $this->cartService->addCart($request);
+
+    //     // return redirect()->back();}
+
+
+    //     // chat
+    //     $result = $this->cartService->addCart($request);
+    //     if ($result === false) {
+    //         return redirect()->back()->withInput();
+    //     }
+
+    //     return redirect()->back();
+    // }
     public function addCart(Request $request)
     {
-        // $this->cartService->addCart($request);
-
-        // return redirect()->back();}
-
-
-        // chat
-        $result = $this->cartService->addCart($request);
-        if ($result === false) {
-            return redirect()->back()->withInput();
-        }
+        $this->cartService->addCart($request);
 
         return redirect()->back();
     }
-
     //chat
     public function order(Request $request, CartService $cartService)
 {
@@ -127,12 +148,6 @@ class CartController extends Controller
 
         $this->infoProductCart($carts, $customer->id);
 
-        // Tạo hóa đơn và lưu trạng thái
-        $invoice = Invoice::create([
-            'customer_id' => $customer->id,
-            'status' => $request->input('status'), // Chọn trạng thái từ form
-            // 'total' => $this->infoProductCart($carts, $customer->id)['total'] // Tổng số tiền của hóa đơn
-        ]);
         DB::commit();
         Session::flash('success', 'Đặt hàng thành công');
         SendMail::dispatch($request->input('email'))->delay(now()->addSeconds(2));

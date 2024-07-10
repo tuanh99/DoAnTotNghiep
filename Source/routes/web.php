@@ -19,13 +19,12 @@ Route::get('/search', [ProductController::class, 'search'])->name('product.searc
 
 Route::get('admin/users/login', [LoginController::class, 'index'])->name('login');
 Route::post('admin/users/login/store', [LoginController::class, 'store']);
-
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['admin'])->group(function () {
 
     Route::prefix('admin')->group(function () {
 
         Route::get('/', [MainController::class, 'index'])->name('admin');
-        Route::get('main', [MainController::class, 'index']);
+        Route::get('main', [MainController::class, 'index'])->name('main');
 
         #Menu
         Route::prefix('menus')->group(function () {
@@ -41,7 +40,7 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('products')->group(function () {
             Route::get('add', [AdminProductController::class, 'create']);
             Route::post('add', [AdminProductController::class, 'store']);
-            Route::get('list', [AdminProductController::class, 'index']);
+            Route::get('list', [AdminProductController::class, 'index'])->name('products.list');
             Route::get('edit/{product}', [AdminProductController::class, 'show']);
             Route::post('edit/{product}', [AdminProductController::class, 'update']);
             Route::DELETE('destroy', [AdminProductController::class, 'destroy']);
@@ -71,37 +70,80 @@ Route::middleware(['auth'])->group(function () {
         Route::post('upload/services', [\App\Http\Controllers\Admin\UploadController::class, 'store']);
 
         #Cart
-        Route::get('customers', [\App\Http\Controllers\Admin\CartController::class, 'index']);
-        Route::get('customers/view/{customer}', [\App\Http\Controllers\Admin\CartController::class, 'show']);
+        Route::get('customers', [\App\Http\Controllers\Admin\CartController::class, 'index'])->name('customers');
+        Route::get('customers/view/{customer}', [\App\Http\Controllers\Admin\CartController::class, 'show'])->name('customers.detail');
+
+        Route::post('/logout', [\App\Http\Controllers\Admin\Users\LoginController::class, 'destroy'])->name('admin.logout');
     });
 });
 
-Route::get('/', [App\Http\Controllers\MainController::class, 'index']);
+Route::get('/', [App\Http\Controllers\MainController::class, 'index'])->name('home');
 Route::post('/services/load-product', [App\Http\Controllers\MainController::class, 'loadProduct']);
 
 Route::get('danh-muc/{id}-{slug}.html', [App\Http\Controllers\MenuController::class, 'index']);
-Route::get('san-pham/{id}-{slug}.html', [App\Http\Controllers\ProductController::class, 'index']);
+Route::get('san-pham/{id}-{slug}.html', [App\Http\Controllers\ProductController::class, 'index'])->name('product.content');
 
 Route::get('bmi-caculator', [App\Http\Controllers\BmiController::class, 'index'])->name('bmi-caculator');
-Route::post('add-cart', [App\Http\Controllers\CartController::class, 'index']);
-Route::get('carts', [App\Http\Controllers\CartController::class, 'show']);
-Route::post('update-cart', [App\Http\Controllers\CartController::class, 'update']);
-Route::get('carts/delete/{id}', [App\Http\Controllers\CartController::class, 'remove']);
-Route::post('carts', [App\Http\Controllers\CartController::class, 'addCart']);
+
+
+
+// Route::post('add-cart', [App\Http\Controllers\CartController::class, 'index'])->name('add-cart');
+// Route::get('carts', [App\Http\Controllers\CartController::class, 'show'])->name('carts.list');
+// Route::post('update-cart', [App\Http\Controllers\CartController::class, 'update']);
+// Route::get('carts/delete/{id}', [App\Http\Controllers\CartController::class, 'remove']);
+// Route::post('carts', [App\Http\Controllers\CartController::class, 'addCart']);
 
 
 
 Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
 
 
-// Route cho danh sách sản phẩm và tìm kiếm
-// Route::get('/products', [ProductController::class, 'list'])->name('products.index');
+
 Route::get('/search', [ProductController::class, 'search'])->name('product.search');
-// Route::get('/san-pham/{id}-{slug}.html', [ProductController::class, 'show'])->name('product.show');
+// // Route::get('/san-pham/{id}-{slug}.html', [ProductController::class, 'show'])->name('product.show');
 Route::get('post', [PostController::class, 'index'])->name('post');
 Route::get('bai-viet/{id}-{slug}.html', [App\Http\Controllers\PostController::class, 'index']);
 Route::get('/bai-viet/{id}-{slug}.html', [PostController::class, 'show'])->name('post.show');
-// Route::post('/admin/invoices/status/{id}', [InvoiceController::class, 'updateStatus']);
+// // Route::post('/admin/invoices/status/{id}', [InvoiceController::class, 'updateStatus']);
 Route::post('/admin/customers/update-status/{customer}', [App\Http\Controllers\Admin\CustomerController::class, 'updateStatus'])->name('customers.update-status');
-// Route::put('/admin/customers/update-status/{customer}', 'CustomerController@updateStatus')->name('customers.update-status');
-// Route::post('/admin/customers/update-status/{customer}', 'CustomerController@updateStatus')->name('customers.update-status');
+// // Route::put('/admin/customers/update-status/{customer}', 'CustomerController@updateStatus')->name('customers.update-status');
+// // Route::post('/admin/customers/update-status/{customer}', 'CustomerController@updateStatus')->name('customers.update-status');
+
+
+
+Route::prefix('user')->group(function () {
+    Route::get('/login', [App\Http\Controllers\Customer\LoginController::class, 'create'])->name('user.login');
+    Route::post('/login', [App\Http\Controllers\Customer\LoginController::class, 'store']);
+    Route::get('/register', [App\Http\Controllers\Customer\RegisterController::class, 'create'])->name('user.register');
+    Route::post('/register', [App\Http\Controllers\Customer\RegisterController::class, 'store']);
+    Route::post('/logout', [App\Http\Controllers\Customer\LoginController::class, 'destroy'])->name('user.logout'); // Thêm route đăng xuất
+
+});
+
+Route::middleware(['user'])->group(function () {
+    // Route::get('/', [App\Http\Controllers\MainController::class, 'index'])->name('home');
+// Route::post('/services/load-product', [App\Http\Controllers\MainController::class, 'loadProduct']);
+
+// Route::get('danh-muc/{id}-{slug}.html', [App\Http\Controllers\MenuController::class, 'index']);
+// Route::get('san-pham/{id}-{slug}.html', [App\Http\Controllers\ProductController::class, 'index']);
+
+// Route::get('bmi-caculator', [App\Http\Controllers\BmiController::class, 'index'])->name('bmi-caculator');
+Route::post('add-cart', [App\Http\Controllers\CartController::class, 'index'])->name('add-cart');
+Route::get('carts', [App\Http\Controllers\CartController::class, 'show'])->name('carts.list');
+Route::post('update-cart', [App\Http\Controllers\CartController::class, 'update']);
+Route::get('carts/delete/{id}', [App\Http\Controllers\CartController::class, 'remove']);
+Route::post('carts', [App\Http\Controllers\CartController::class, 'addCart']);
+
+
+
+// Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
+
+
+// Route::get('/search', [ProductController::class, 'search'])->name('product.search');
+
+// Route::get('post', [PostController::class, 'index'])->name('post');
+// Route::get('bai-viet/{id}-{slug}.html', [App\Http\Controllers\PostController::class, 'index']);
+// Route::get('/bai-viet/{id}-{slug}.html', [PostController::class, 'show'])->name('post.show');
+
+// Route::post('/admin/customers/update-status/{customer}', [App\Http\Controllers\Admin\CustomerController::class, 'updateStatus'])->name('customers.update-status');
+});

@@ -20,9 +20,9 @@
 
                         {!! $menusHtml !!}
 
-                        <li>
+                        <!-- <li>
                             <a href="contact.html">Liên Hệ</a>
-                        </li>
+                        </li> -->
                         <li><a href="{{ route('post') }}">Bài Viết</a></li>
                         <li><a href="{{ route('bmi-caculator') }}">Tính chỉ số BMI</a></li>
                     </ul>
@@ -41,7 +41,20 @@
 
                     <div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart"
                     data-notify="{{ (\Session::has('carts') && count(\Session::get('carts')) > 0) ? count(\Session::get('carts')) : 0 }}">
-                    <i class="zmdi zmdi-shopping-cart"></i>
+                    <a href="{{route('carts.list')}}"><i class="zmdi zmdi-shopping-cart"></i></a>
+                </div>
+
+                <!-- User Authentication -->
+                <div class="user-auth">
+                        @if (auth('user')->check())
+                            <span class="user-name">Chào, {{ auth('user')->user()->name; }}</span>
+                            <a href="{{ route('user.logout') }}" class="btn-logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Đăng xuất</a>
+                            <form id="logout-form" action="{{ route('user.logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                        @else
+                            <a href="{{ route('user.login') }}" class="btn-login">Đăng nhập</a>
+                        @endif
                 </div>
 
                 </div>
@@ -63,7 +76,7 @@
             </div>
 
             <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti js-show-cart" data-notify="{{ !is_null(\Session::get('carts')) ? count(\Session::get('carts')) : 0 }}">
-                <i class="zmdi zmdi-shopping-cart"></i>
+                <a href="{{route('carts.list')}}"><i class="zmdi zmdi-shopping-cart"></i></a>
             </div>
         </div>
 
@@ -83,9 +96,9 @@
 
             {!! $menusHtml !!}
 
-            <li>
+            <!-- <li>
                 <a href="contact.html">Liên Hệ</a>
-            </li>
+            </li> -->
             <li><a href="{{ route('post') }}">Bài Viết</a></li>
             <li><a href="{{ route('bmi-caculator') }}">Tính chỉ số BMI</a></li>
         </ul>
@@ -125,7 +138,7 @@
     <button class="flex-c-m trans-04" type="submit">
         <i class="zmdi zmdi-search"></i>
     </button>
-    <input class="plh3" type="text" name="search" placeholder="Search...">
+    <input class="plh3" type="text" name="search" placeholder="Tìm kiếm...">
 </form>
     </div>
 </div>

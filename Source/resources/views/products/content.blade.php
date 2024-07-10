@@ -73,11 +73,12 @@
                         <h4 class="mtext-105 cl2 js-name-detail p-b-14">
                             {{ $title }}
                         </h4>
-
-                        <span class="mtext-106 cl2">
+                        <div class="col">
+                        <strike class = "row cl2">{{ $product->price }} </strike>
+                        <span class="row mtext-106 cl2">
 							{!! \App\Helpers\Helper::price($product->price, $product->price_sale) !!}
 						</span>
-
+                        </div>
                         <p class="stext-102 cl3 p-t-23">
                             {{ $product->stock }} Sản phẩm có sẵn
                         </p>
@@ -95,8 +96,7 @@
                 <i class="fs-16 zmdi zmdi-plus"></i>
             </div>
         </div>
-
-        <button  type="submit"class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
+        <button  type="submit" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
             Thêm vào giỏ hàng
         </button>
         <input type="hidden" name="product_id" value="{{ $product->id }}">
@@ -165,65 +165,6 @@
                             </div>
                         </div>
 
-                      
-                        <div class="tab-pane fade" id="information" role="tabpanel">
-                            <div class="row">
-                                <div class="col-sm-10 col-md-8 col-lg-6 m-lr-auto">
-                                    <ul class="p-lr-28 p-lr-15-sm">
-                                        <li class="flex-w flex-t p-b-7">
-											<span class="stext-102 cl3 size-205">
-												Weight
-											</span>
-
-                                            <span class="stext-102 cl6 size-206">
-												0.79 kg
-											</span>
-                                        </li>
-
-                                        <li class="flex-w flex-t p-b-7">
-											<span class="stext-102 cl3 size-205">
-												Dimensions
-											</span>
-
-                                            <span class="stext-102 cl6 size-206">
-												110 x 33 x 100 cm
-											</span>
-                                        </li>
-
-                                        <li class="flex-w flex-t p-b-7">
-											<span class="stext-102 cl3 size-205">
-												Materials
-											</span>
-
-                                            <span class="stext-102 cl6 size-206">
-												60% cotton
-											</span>
-                                        </li>
-
-                                        <li class="flex-w flex-t p-b-7">
-											<span class="stext-102 cl3 size-205">
-												Color
-											</span>
-
-                                            <span class="stext-102 cl6 size-206">
-												Black, Blue, Grey, Green, Red, White
-											</span>
-                                        </li>
-
-                                        <li class="flex-w flex-t p-b-7">
-											<span class="stext-102 cl3 size-205">
-												Size
-											</span>
-
-                                            <span class="stext-102 cl6 size-206">
-												XL, L, M, S
-											</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-
                        
                     </div>
                 </div>
@@ -248,6 +189,7 @@
 
             @include('products.list')
         </div>
-    </section>
 
+
+    </section>
 @endsection

@@ -8,16 +8,16 @@ use App\Models\Product;
 
 class ProductService
 {
-    const LIMIT = 16;
+    // const LIMIT = 15;
 
-    public function get($page = null)
+    public function get($page = null, $sortBy = 'id', $sortOrder = 'asc')
     {
         return Product::select('id', 'name', 'price', 'price_sale', 'thumb')
-            ->orderByDesc('id')
+            ->orderBy($sortBy, $sortOrder)
             ->when($page != null, function ($query) use ($page) {
                 $query->offset($page * self::LIMIT);
             })
-            ->limit(self::LIMIT)
+            // ->limit(self::LIMIT)
             ->get();
     }
 
@@ -34,7 +34,7 @@ class ProductService
         return Product::select('id', 'name', 'price', 'price_sale', 'thumb')
             ->where('active', 1)
             ->where('id', '!=', $id)
-            ->orderByDesc('id')
+            ->orderBy('id')
             ->limit(8)
             ->get();
     }

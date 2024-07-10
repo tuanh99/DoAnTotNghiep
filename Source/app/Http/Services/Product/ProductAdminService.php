@@ -5,6 +5,10 @@ namespace App\Http\Services\Product;
 
 
 use App\Models\Menu;
+use App\Models\Cart;
+use App\Http\Services\CartService;
+use Illuminate\Http\Request;
+use App\Models\Customer;
 use App\Models\Product;
 use Illuminate\Support\Facades\Session;
 
@@ -35,8 +39,9 @@ class ProductAdminService
     public function insert($request)
     {
         $isValidPrice = $this->isValidPrice($request);
-        if ($isValidPrice === false) return false;
-
+        if ($isValidPrice === false) {
+            return redirect()->back()->withInput();
+        }
         try {
             $request->except('_token');
             Product::create($request->all());
@@ -51,10 +56,26 @@ class ProductAdminService
         return  true;
     }
 
-    public function get()
+    public function get($sortBy = 'id', $sortOrder = 'asc')
     {
-        return Product::with('menu')
-            ->orderByDesc('id')->paginate(15);
+        // return Product::select('id', 'name', 'price', 'price_sale', 'stock', 'active', 'updated_at')
+            // Lấy sản phẩm kèm theo tổng số lượng đã bán
+        // $products = Product::with('menu')
+        // ->withCount(['carts as total_sold' => function ($query) {
+        //     $query->select(\DB::raw("SUM(pty)"));
+        // }])
+
+        // Lấy sản phẩm kèm theo tổng số lượng đã bán
+    $products = Product::with('menu')
+    ->withCount(['carts as total_sold' => function ($query) {
+        $query->whereHas('customer', function ($query) {
+            $query->where('status', 'Đã giao thành công');
+        })->select(\DB::raw("SUM(pty)"));
+    }])
+        ->orderBy($sortBy, $sortOrder)
+        ->paginate(15);
+
+    return $products;
     }
 
     public function update($request, $product)

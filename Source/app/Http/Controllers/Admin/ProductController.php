@@ -6,10 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\ProductRequest;
 use App\Http\Services\Product\ProductAdminService;
 use App\Models\Product;
+use App\Http\Services\CartService;
+use App\Models\Customer;
+use App\Models\Menu;
+use App\Models\Cart;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
-{
+{   
     protected $productService;
 
     public function __construct(ProductAdminService $productService)
@@ -17,19 +21,20 @@ class ProductController extends Controller
         $this->productService = $productService;
     }
 
-    public function index()
+    public function index(Request $request)
     {   
-            // $products = Product::orderBy('id', 'desc')->paginate(10);
-
+         
+         $sortBy = $request->input('sort_by', 'id'); // Mặc định sắp xếp theo id
+        $sortOrder = $request->input('sort_order', 'asc'); // Mặc định sắp xếp tăng dần
+        $products = $this->productService->get($sortBy, $sortOrder);
         return view('admin.product.list', [
             'title' => 'Danh Sách Sản Phẩm',
-            'products' => $this->productService->get()
-            // chat
-            // 'products'=> $products
-            // $products = Product::orderBy('id', 'desc')->get()
+            // 'products' => $this->productService->get()
+            'products' => $products,
+            
         ]);
     }
-
+    
     public function create()
     {
         return view('admin.product.add', [

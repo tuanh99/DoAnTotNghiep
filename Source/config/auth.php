@@ -36,17 +36,35 @@ return [
     */
 
     'guards' => [
-        'web' => [
+        // 'web' => [
+        //     'driver' => 'session',
+        //     'provider' => 'users',
+        // ],
+        'admin' =>[
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'admins',
         ],
-
         'api' => [
             'driver' => 'token',
             'provider' => 'users',
             'hash' => false,
         ],
+        'user' => [  // Định nghĩa guard 'user'
+            'driver' => 'session',
+            'provider' => 'users',  // Hoặc 'your_provider_name'
+        ], 
     ],
+
+    // 'guards' => [
+    //     'web' => [
+    //         'driver' => 'session',
+    //         'provider' => 'users',
+    //     ],
+    //     'customer' => [
+    //     'driver' => 'session',
+    //     'provider' => 'clients',
+    // ],
+    // ],
 
     /*
     |--------------------------------------------------------------------------
@@ -66,15 +84,25 @@ return [
     */
 
     'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\User::class,
-        ],
+        // 'users' => [
+        //     'driver' => 'eloquent',
+        //     'model' => App\Models\User::class,
+        // ],
 
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
         // ],
+         'users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\User::class,
+        ],
+ 'admins' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\User::class,
+        ],
+
+
     ],
 
     /*
