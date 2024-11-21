@@ -1,96 +1,111 @@
 @extends('admin.main')
 
 @section('content')
-    Trang quản trị Admin
-    <div class="dashboard-cards">
-    <div class="card">
-        <div class="card-icon">
-            <i class="fas fa-users"></i> <!-- Icon cho Total Customer -->
-        </div>
-        <div class="card-content">
-            <h2 >Tổng khách hàng</h2>
-            <p>{{ $totalCustomers }}</p>
-            <h2>Tính đến thời điểm hiện tại</h2>
-        </div>
-    </div>
-    
-    <div class="card">
-        <div class="card-icon">
-            <i class="fas fa-shopping-cart"></i> <!-- Icon cho Total Order -->
-        </div>
-        <div class="card-content">
-            <h2>Tổng đơn hàng</h2>
-            <p>{{ $totalOrders }}</p>
-            <h2>Tính đến thời điểm hiện tại</h2>
-        </div>
-    </div>
-
-    <div class="card">
-        <div class="card-icon">
-            <i class="fas fa-dollar-sign"></i> <!-- Icon cho Total Sale -->
-        </div>
-        <div class="card-content">
-            <h2>Tổng doanh thu</h2>
-            <p>{{ number_format($totalSalesCompleted, '0', '', '.') }}</p>
-
-            <h2>Tính đến thời điểm hiện tại</h2>
-        </div>
-    </div>
-</div>
+   
 
 
-<div class="container">
-    <div class= "recent-order">
-        <h2 style="text-align: center; font-weight: 550; font-size: 25px">Đơn hàng gần đây</h2>
-        <table class="table" style="width= 42vw">
-            <thead>
-                <tr>
-                    
-                    <th>Ngày đặt hàng</th>
-                    <th>Tên khách hàng</th>
-                    <th>SĐT</th>
-                    <!-- <th>Tổng</th> -->
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($customers as $customer)
-                <tr>
-                    <td>{{ $customer->created_at->setTimezone('Asia/Ho_Chi_Minh')->format('d/m/Y H:i:s') }}</td>
-                    <td>{{ $customer->name }}</td>
-                    <td>{{ $customer->phone }}</td>
-                    
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-    <!-- Hiển thị top 10 sản phẩm bán chạy -->
-    <div class="top-selling-products">
-        <h2 style="text-align: center; font-weight: 550; font-size: 25px">Top 5 Sản phẩm bán chạy</h2>
-        <table class="table">
-            <thead>
-                <tr>
+
+<!-- Hiển thị top  sản phẩm bán chạy -->
+<div class="top-selling-products ">
+        <h2 style=" text-align: center;font-weight: 550; font-size: 25px">Top 5 Sản phẩm bán chạy trong tháng</h2>
+        <table style="width: 100%" class="table table-bordered table-hover">
+            <thead class="thead-dark">
+                <tr> 
                     <th>STT</th>
                     <th>Tên sản phẩm</th>
                     <th>Danh mục</th>
                     <th style = "width: 100px">Đã bán</th>
+                    <th>Tháng</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($topSellingProducts as $index => $product)
                     <tr>
                         <td>{{ $index + 1 }}</td>
-                        <td>{{ $product->name }}</td>
+                        <td style=" text-align: start;">{{ $product->product_name }}</td>
                         <td>{{ $product->menu_name }}
                         <td>{{ $product->total_sold }}</td>
+                        <td>{{ $product->month }}/{{ $product->year }}</td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
+    <div class="container">
+    <div class='col'></div>
+        <div class="row order-today">
+            <h2 style="text-align: center; font-weight: 550; font-size: 25px">Đơn hàng giao thành công trong ngày</h2>
+            <table class="table table-bordered table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên KH</th>
+                        <th>Email</th>
+                        <th>Số điện thoại</th>
+                        <th>Tổng số tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($ordersToday as $order)
+                        <tr>
+                            <td>{{ $order->id }}</td>
+                            <td>{{ $order->customer_name }}</td>
+                            <td style=" text-align: start;">{{ $order->email }}</td>
+                            <td>{{ $order->phone }}</td>
+                            <td>{{ number_format($order->total_amount, 0, ',', '.') }} đ</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+            <div class="total-revenue" style="text-align: center;">
+                <h3>Tổng doanh thu trong ngày: {{ number_format($totalRevenue, 0, ',', '.') }} đ</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <h2 style="text-align: center; font-weight: 550; font-size: 25px" >Doanh thu từng ngày</h2>
+                @if ($dailyRevenues->count() > 0)
+                    <table class="table table-bordered table-hover">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Ngày</th>
+                                <th>Doanh thu</th>
+                                <th>Số hóa đơn</th>
+                                <th>Lợi nhuận</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($dailyRevenues as $dailyRevenues)
+                                <tr>
+                                    <td>{{ $dailyRevenues->date }}</td>
+                                    <td>{{ number_format($dailyRevenues->total_revenue, 0, ',', '.') }} VND</td>
+                                    <td>{{ $dailyRevenues->total_orders }}</td>
+                                    <td>{{ number_format($dailyProfits[$dailyRevenues->date], 0, ',', '.') }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                        <tfoot>
+                    <tr>
+                    <th colspan="1" class="text-right">Tổng</th>
+                        <th class="text-danger font-weight-bold">{{ number_format($totalRevenueThisMonth, 0, ',', '.') }} VNĐ</th>
+                        <th class="text-danger font-weight-bold">{{ number_format($totalOrdersThisMonth, 0, ',', '.') }}</th>
+                        <th class="text-danger font-weight-bold">{{ number_format(array_sum($dailyProfits), 0, ',', '.') }} VNĐ</th>
+                    </tr>
+                    
+                </tfoot>
+                    </table>
+                    <!-- <div class="total-revenueThisMonth" style="text-align: center; width: 500px">
+                        <h3  >Tổng doanh thu trong tháng: {{ number_format($totalRevenueThisMonth, 0, ',', '.') }} </h3>
+                    </div> -->
+                @else
+                    <p>Không có dữ liệu doanh thu.</p>
+                @endif
 
+                
+
+        </div>
+    </div>
 </div>
-
 
 
 

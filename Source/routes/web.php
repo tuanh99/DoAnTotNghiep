@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Users\LoginController;
+use App\Http\Controllers\Admin\Users\AccountController;
 use App\Http\Controllers\Admin\MainController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
@@ -11,7 +12,7 @@ use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\BmiController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProductController;
-
+use App\Http\Controllers\OrderController;
 
 
 
@@ -44,6 +45,7 @@ Route::middleware(['admin'])->group(function () {
             Route::get('edit/{product}', [AdminProductController::class, 'show']);
             Route::post('edit/{product}', [AdminProductController::class, 'update']);
             Route::DELETE('destroy', [AdminProductController::class, 'destroy']);
+            Route::get('search', [AdminProductController::class, 'search'])->name('products.search');
         });
 
         #Slider
@@ -70,10 +72,21 @@ Route::middleware(['admin'])->group(function () {
         Route::post('upload/services', [\App\Http\Controllers\Admin\UploadController::class, 'store']);
 
         #Cart
-        Route::get('customers', [\App\Http\Controllers\Admin\CartController::class, 'index'])->name('customers');
-        Route::get('customers/view/{customer}', [\App\Http\Controllers\Admin\CartController::class, 'show'])->name('customers.detail');
+        // Route::get('customers', [\App\Http\Controllers\Admin\CartController::class, 'index'])->name('customers');
+        Route::get('orders', [\App\Http\Controllers\Admin\OrderController::class, 'index'])->name('orders');
+        Route::get('/orders/detail/{order_id}',[\App\Http\Controllers\Admin\OrderController::class, 'showDetail'])->name('admin.order.detail');
+        // Route::get('customers/view/{customer}', [\App\Http\Controllers\Admin\CartController::class, 'show'])->name('customers.detail');
+        Route::post('/admin/orders/update-status/{order}', [App\Http\Controllers\Admin\OrderController::class, 'update'])->name('orders.update-status');
+
 
         Route::post('/logout', [\App\Http\Controllers\Admin\Users\LoginController::class, 'destroy'])->name('admin.logout');
+    
+
+        #User
+        Route::get('/user/list', [\App\Http\Controllers\Admin\Users\AccountController::class, 'index'])->name('users.list');
+        Route::post('/users/deactivate/{id}', [AccountController::class, 'deactivate'])->name('users.deactivate');
+        Route::post('/users/activate/{id}', [AccountController::class, 'activate'])->name('users.activate');
+
     });
 });
 
@@ -105,7 +118,7 @@ Route::get('post', [PostController::class, 'index'])->name('post');
 Route::get('bai-viet/{id}-{slug}.html', [App\Http\Controllers\PostController::class, 'index']);
 Route::get('/bai-viet/{id}-{slug}.html', [PostController::class, 'show'])->name('post.show');
 // // Route::post('/admin/invoices/status/{id}', [InvoiceController::class, 'updateStatus']);
-Route::post('/admin/customers/update-status/{customer}', [App\Http\Controllers\Admin\CustomerController::class, 'updateStatus'])->name('customers.update-status');
+// Route::post('/admin/customers/update-status/{customer}', [App\Http\Controllers\Admin\CustomerController::class, 'updateStatus'])->name('customers.update-status');
 // // Route::put('/admin/customers/update-status/{customer}', 'CustomerController@updateStatus')->name('customers.update-status');
 // // Route::post('/admin/customers/update-status/{customer}', 'CustomerController@updateStatus')->name('customers.update-status');
 
@@ -134,16 +147,17 @@ Route::post('update-cart', [App\Http\Controllers\CartController::class, 'update'
 Route::get('carts/delete/{id}', [App\Http\Controllers\CartController::class, 'remove']);
 Route::post('carts', [App\Http\Controllers\CartController::class, 'addCart']);
 
+Route::get('/user/account', [App\Http\Controllers\Customer\AccountController::class, 'show'])->name('user.account');
+// Route::post('/user/account/update', [App\Http\Controllers\Customer\AccountController::class, 'update'])->name('user.account.update');
+Route::put('/user/{id}', [App\Http\Controllers\Customer\AccountController::class, 'update'])->name('user.update');
+Route::get('/{id}/change-password', [App\Http\Controllers\Customer\AccountController::class, 'changePasswordForm'])->name('user.change-password');
+Route::post('/{id}/update-password', [App\Http\Controllers\Customer\AccountController::class, 'updatePassword'])->name('user.change-password.update');
 
-
-// Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
-
-
-// Route::get('/search', [ProductController::class, 'search'])->name('product.search');
-
-// Route::get('post', [PostController::class, 'index'])->name('post');
-// Route::get('bai-viet/{id}-{slug}.html', [App\Http\Controllers\PostController::class, 'index']);
-// Route::get('/bai-viet/{id}-{slug}.html', [PostController::class, 'show'])->name('post.show');
-
-// Route::post('/admin/customers/update-status/{customer}', [App\Http\Controllers\Admin\CustomerController::class, 'updateStatus'])->name('customers.update-status');
+Route::get('/orders', [App\Http\Controllers\OrderController::class, 'index'])->name('user.orders');
+Route::put('/orders/{id}/status', [App\Http\Controllers\OrderController::class, 'updateStatus'])->name('order.update.status');
+Route::get('/orders/detail/{order_id}',[\App\Http\Controllers\OrderController::class, 'showDetail'])->name('order.detail');
+// cổng thanh toán
+Route::post('/vnpay_payment', [App\Http\Controllers\PaymentController::class, 'vnpay_payment']);
+Route::get('/vnpay-return', [App\Http\Controllers\PaymentController::class, 'vnpay_return'])->name('vnpay.return');
 });
+// Route::post('/vnpay_payment', [App\Http\Controllers\PaymentController::class, 'vnpay_payment']);

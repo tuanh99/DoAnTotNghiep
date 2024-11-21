@@ -20,6 +20,8 @@ class RegisterController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|confirmed|min:8',
+        ],[
+            'password.confirmed' => 'Mật khẩu xác nhận phải khớp với mật khẩu.',
         ]);
 
         User::create([

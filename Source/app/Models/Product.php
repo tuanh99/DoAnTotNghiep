@@ -13,9 +13,8 @@ class Product extends Model
         'name',
         'description',
         'content',
-        'size',
-        'color',
         'menu_id',
+        'price_cost',
         'price',
         'price_sale',
         'stock',
@@ -27,8 +26,13 @@ class Product extends Model
     {
         return $this->hasOne(Menu::class, 'id', 'menu_id')
             ->withDefault(['name' => '']);
+        // return $this->belongsTo(Menu::class);
+        
     }
-
+    public function orderDetails()
+    {
+        return $this->hasMany(OrderDetail::class, 'product_name', 'name');
+    }
     public function getUpdatedAtFormatAttribute()
     {
         return $this->updated_at->setTimezone('Asia/Ho_Chi_Minh')->format('d/m/Y H:i:s');

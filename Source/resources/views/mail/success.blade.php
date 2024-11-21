@@ -19,6 +19,7 @@ Xin chào {{ $customer->name }},
 
 Tổng tiền đơn hàng: {{ number_format(array_sum(array_map(fn($item) => $item['price'] * $item['quantity'], $orderDetails)), 0, ',', '.') }} VNĐ
 
+Thông báo được gửi từ HealthyShapes
 Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi!
 
 Thanks,<br>

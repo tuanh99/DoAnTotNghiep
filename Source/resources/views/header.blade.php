@@ -45,18 +45,62 @@
                 </div>
 
                 <!-- User Authentication -->
-                <div class="user-auth">
+                <!-- <div class="col user-auth">
                         @if (auth('user')->check())
-                            <span class="user-name">Chào, {{ auth('user')->user()->name; }}</span>
-                            <a href="{{ route('user.logout') }}" class="btn-logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Đăng xuất</a>
+                            <span class="row user-name">{{ auth('user')->user()->name; }}</span>
+                            <a href="{{ route('user.logout') }}" class="row btn-logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Đăng xuất</a>
                             <form id="logout-form" action="{{ route('user.logout') }}" method="POST" style="display: none;">
                                 @csrf
                             </form>
                         @else
                             <a href="{{ route('user.login') }}" class="btn-login">Đăng nhập</a>
                         @endif
+                </div> -->
+                <!--  hover-->
+                <!-- <div class="col user-auth">
+                        @if (auth('user')->check())
+                            <div class="dropdown">
+                                <span class="row user-name" id="userDropdown" style="cursor: pointer;" 
+                                    onmouseover="this.nextElementSibling.style.display='block'" 
+                                    onmouseout="this.nextElementSibling.style.display='none'">
+                                    {{ auth('user')->user()->name }}
+                                </span>
+                                <div class="dropdown-menu" style="display:none; position:absolute; background-color:white; border:1px solid #ccc; z-index:1000;">
+                                    <a href="/" class="dropdown-item">Tài khoản của tôi</a>
+                                    <a href="/" class="dropdown-item">Đơn mua</a>
+                                    <a href="{{ route('user.logout') }}" class="dropdown-item" 
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Đăng xuất</a>
+                                </div>
+                            </div>
+                            <form id="logout-form" action="{{ route('user.logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                        @else
+                            <a href="{{ route('user.login') }}" class="btn-login">Đăng nhập</a>
+                        @endif
+                </div> -->
+
+
+                <div class="col user-auth">
+                    @if (Auth::guard('user')->check())
+                        <span class="row user-name" onclick="toggleMenu()"> {{ auth('user')->user()->name; }} </span>
+                        <div id="account-menu" class="account-menu" style="display: none;">
+                            <ul>
+                                <li><a href="{{route('user.account')}}">Tài khoản của tôi</a></li>
+                                <li><a href="{{ route('user.change-password', ['id' => auth('user')->user()->id]) }}">Đổi mật khẩu</a></li>
+                                <li><a href="{{ route('user.orders') }}">Đơn mua</a></li>
+                                <li><a href="{{ route('user.logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Đăng xuất</a></li>
+                            </ul>
+                        </div>
+                        <form id="logout-form" action="{{ route('user.logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+                    @else
+                        <a href="{{ route('user.login') }}" class="btn-login">Đăng nhập</a>
+                    @endif
                 </div>
 
+<!--  -->
                 </div>
             </nav>
         </div>
@@ -80,6 +124,7 @@
             </div>
         </div>
 
+        
         <!-- Button show menu -->
         <div class="btn-show-menu-mobile hamburger hamburger--squeeze">
 				<span class="hamburger-box">
@@ -103,23 +148,6 @@
             <li><a href="{{ route('bmi-caculator') }}">Tính chỉ số BMI</a></li>
         </ul>
     </div>
-
-    <!-- Modal Search -->
-    <!-- <div class="modal-search-header flex-c-m trans-04 js-hide-modal-search">
-        <div class="container-search-header">
-            <button class="flex-c-m btn-hide-modal-search trans-04 js-hide-modal-search">
-                <img src="/template/images/icons/icon-close2.png" alt="CLOSE">
-            </button>
-
-            <form class="wrap-search-header flex-w p-l-15">
-                <button class="flex-c-m trans-04">
-                    <i class="zmdi zmdi-search"></i>
-                </button>
-                <input class="plh3" type="text" name="search" placeholder="Search...">
-            </form>
-        </div>
-    </div> -->
-
     <!-- Modal Search -->
 <div class="modal-search-header flex-c-m trans-04 js-hide-modal-search">
     <div class="container-search-header">
@@ -139,7 +167,55 @@
         <i class="zmdi zmdi-search"></i>
     </button>
     <input class="plh3" type="text" name="search" placeholder="Tìm kiếm...">
-</form>
+    </form>
     </div>
 </div>
+
+<script>
+    function toggleMenu() {
+        const menu = document.getElementById('account-menu');
+        menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+    }
+
+    // Đóng menu khi click ra ngoài
+    document.addEventListener('click', function(event) {
+        const menu = document.getElementById('account-menu');
+        const userName = document.querySelector('.user-name');
+        if (!userName.contains(event.target) && !menu.contains(event.target)) {
+            menu.style.display = 'none';
+        }
+    });
+</script>
+<style>
+
+.user-name {
+    transition: color 0.3s ease;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.user-name:hover {
+    color: blue; /* Màu xanh khi hover */
+    text-shadow: 0 0 8px blue; /* Hiệu ứng phát sáng */
+}
+    .account-menu {
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    z-index: 1000;
+}
+.account-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.account-menu ul li {
+    padding: 8px 12px;
+}
+.account-menu ul li:hover {
+    background-color: #f0f0f0;
+}
+
+</style>
 </header>
+

@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}"> <!-- Đường dẫn tới CSS của Laravel -->
     <style>
         body {
-            background-color: #f5f5f5;
+            background: url('https://www.vietnamworks.com/hrinsider/wp-content/uploads/2023/12/ai-la-nguoi-dam-me-nhung-bau-troi-dem-day-sao-dep-den-nao-long-nao.jpg') no-repeat center center fixed; 
+            background-size: cover;
             font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
@@ -18,7 +19,7 @@
         .login-container {
             width: 400px;
             padding: 40px;
-            background: white;
+            background: rgba(255, 255, 255, 0.8); /* Nền trắng bán trong suốt */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
             text-align: center;
@@ -52,16 +53,18 @@
         .btn-login {
             width: 100%;
             padding: 10px;
-            background-color: #ff5722;
+            background-color: #333;
             border: none;
             border-radius: 4px;
             color: white;
             font-weight: bold;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s ease;
+            /* transition: color 0.3s ease; */
         }
         .btn-login:hover {
-            background-color: #e64a19;
+            background-color: grey;
+            text-shadow: 0 0 8px grey;
         }
         .forgot-password, .register-link {
             display: block;
@@ -80,12 +83,12 @@
 </head>
 <body>
     <div class="login-container">
-        <div class="login-header">{{ __('Đăng nhập') }}</div>
+        <div class="login-header">{{ __('Đăng Nhập') }}</div>
         <form method="POST" action="{{ route('user.login') }}">
             @csrf
 
             <div class="form-group">
-                <label for="email">{{ __('E-Mail Address') }}</label>
+                <label for="email">{{ __('Email') }}</label>
                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
                 @error('email')
                     <span class="invalid-feedback" role="alert">
@@ -95,7 +98,7 @@
             </div>
 
             <div class="form-group">
-                <label for="password">{{ __('Password') }}</label>
+                <label for="password">{{ __('Mật Khẩu') }}</label>
                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
                 @error('password')
                     <span class="invalid-feedback" role="alert">
@@ -104,27 +107,26 @@
                 @enderror
             </div>
 
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
                     <label class="form-check-label" for="remember">
                         {{ __('Remember Me') }}
                     </label>
                 </div>
-            </div>
+            </div> -->
 
             <button type="submit" class="btn-login">
-                {{ __('Login') }}
+                {{ __('Đăng Nhập') }}
             </button>
-
             @if (Route::has('password.request'))
                 <a class="forgot-password" href="{{ route('password.request') }}">
-                    {{ __('Forgot Your Password?') }}
+                    {{ __('Quên mật khẩu?') }}
                 </a>
             @endif
 
             <a class="register-link" href="{{ route('user.register') }}">
-                {{ __('Don\'t have an account? Register') }}
+                {{ __('Bạn chưa có tài khoản? Đăng ký ngay') }}
             </a>
         </form>
     </div>

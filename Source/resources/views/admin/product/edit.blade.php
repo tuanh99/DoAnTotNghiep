@@ -33,6 +33,13 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
+                        <label for="menu">Giá Nhập</label>
+                        <input type="number" name="price_cost" value="{{ $product->price_cost }}"  class="form-control" >
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
                         <label for="menu">Giá Gốc</label>
                         <input type="number" name="price" value="{{ $product->price }}"  class="form-control" >
                     </div>

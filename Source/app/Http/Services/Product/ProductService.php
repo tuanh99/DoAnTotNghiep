@@ -2,22 +2,22 @@
 
 
 namespace App\Http\Services\Product;
-
+use Illuminate\Support\Facades\DB;
 
 use App\Models\Product;
 
 class ProductService
 {
-    // const LIMIT = 15;
+    const LIMIT = 100;
 
     public function get($page = null, $sortBy = 'id', $sortOrder = 'asc')
     {
-        return Product::select('id', 'name', 'price', 'price_sale', 'thumb')
+        return Product::select('id', 'name', 'price_cost', 'price', 'price_sale', 'thumb')
             ->orderBy($sortBy, $sortOrder)
             ->when($page != null, function ($query) use ($page) {
                 $query->offset($page * self::LIMIT);
             })
-            // ->limit(self::LIMIT)
+            ->limit(self::LIMIT)
             ->get();
     }
 
@@ -63,9 +63,17 @@ class ProductService
 public function search($query)
 {
     // Thay thế khoảng trắng trong từ khóa bằng %
-    $keyword = str_replace(' ', '%', $query);
+    // $keyword = str_replace(' ', '%', $query);
 
-    return Product::where('name', 'like', "%{$keyword}%")
-                  ->get();
+    // return Product::where('name', 'like', "%{$keyword}%")
+    //               ->get();
+                //   return Product::whereRaw("MATCH(name) AGAINST(? IN BOOLEAN MODE)", [$keyword])
+                //   ->get();
+
+                $keyword = $query;
+
+                return Product::whereRaw("LOCATE(?, name) > 0", [$keyword])
+                              ->get();
 }
+
 }

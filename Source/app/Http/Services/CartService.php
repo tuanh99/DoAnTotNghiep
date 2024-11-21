@@ -8,6 +8,8 @@ use App\Jobs\SendMail;
 use App\Models\Cart;
 use App\Models\Customer;
 use App\Models\Product;
+use App\Models\Order;
+use App\Models\OrderDetail;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -177,9 +179,36 @@ class CartService
         ]);
         Log::info('Customer created: ', $customer->toArray()); // Log thông tin khách hàng
          // Log trước khi lưu thông tin sản phẩm vào giỏ hàng
+         
+         // Tạo bản ghi Order mới
+        $order = Order::create([
+            'user_id' => auth('user')->id(),
+            'customer_id' => $customer->id,
+            'customer_name' => $customer->name,
+            'phone' => $customer->phone,
+            'address' => $customer->address,
+            'email' => $customer->email,
+            'content' => $customer->content,
+            'total_amount' => $this->calculateTotalAmount($carts)
+        ]);
+
+        //Lưu thông tin vào bảng OrderDetail
+        foreach ($carts as $productId => $quantity) {
+            $product = Product::find($productId);
+            if ($product) {
+            $orderDetail = new OrderDetail();
+            $orderDetail->order_id = $order->id; 
+            $orderDetail->product_name = $product->name;
+            $orderDetail->product_quantity = $quantity;
+            $orderDetail->product_price = $product->price_sale != 0 ? $product->price_sale : $product->price;
+            $orderDetail->save();
+            }
+        }
+
+        // Log trước khi lưu thông tin sản phẩm vào giỏ hàng
          Log::info('Storing product information in cart.');
         $this->infoProductCart($carts, $customer->id);
-
+        
         // Giảm số lượng tồn kho của các sản phẩm trong giỏ hàng
         foreach ($carts as $productId => $qty) {
             $product = Product::find($productId);
@@ -268,6 +297,16 @@ class CartService
         }])->get();
     }
 
-
+    private function calculateTotalAmount($carts)
+{
+    $total = 0;
+    foreach ($carts as $productId => $qty) {
+        $product = Product::find($productId);
+        if ($product) {
+            $total += $product->price_sale != 0 ? $product->price_sale * $qty : $product->price * $qty;
+        }
+    }
+    return $total;
+}
     
 }

@@ -34,9 +34,14 @@ class ProductController extends Controller
     {
         $query = $request->input('search');
         $products = $this->productService->search($query);
-    
+        if ($products->isEmpty()) {
+            $message = "Không có kết quả tìm kiếm cho \"$query\"";
+        } else {
+            $message = "Kết quả tìm kiếm cho: \"$query\"";
+        }
         return view('products.search-results', [
-            'title' => "Kết quả tìm kiếm cho: $query",
+            // 'title' => "Kết quả tìm kiếm cho: $query",
+            'title' => $message,
             'products' => $products,
             'query' => $query
         ]);

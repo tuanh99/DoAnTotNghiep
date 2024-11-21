@@ -1,8 +1,8 @@
 @extends('admin.main')
 
 @section('content')
-    <table class="table">
-        <thead>
+    <table class="table table-bordered table-hover">
+        <thead class="thead-dark">
         <tr>
             <th style="width: 50px">Stt</th>
             <th>Tiêu Đề</th>

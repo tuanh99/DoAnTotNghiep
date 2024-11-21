@@ -19,12 +19,12 @@
     </div>
     <section class="sec-product-detail bg0 p-t-65 p-b-60">
 <div class="tab-pane fade show active" id="description" role="tabpanel">
-    <div class="how-pos2 p-lr-15-md">
-        <p class="stext-102 cl6 txt-center" >
+    <div class="how-pos2 p-lr-15-md" >
+        <p class="stext-102 cl6 txt-center" style= "font-size: 20px">
         {!! $posts->name !!}
         </p>
         <!-- <p><img src="{!! $posts->thumb !!}" alt=""></p> -->
-        <p>{!! $posts->content !!}</p>
+        <p style = "width: 1000px" >{!! $posts->content !!}</p>
     </div>
 </div>
 

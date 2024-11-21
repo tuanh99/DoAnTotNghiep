@@ -41,12 +41,16 @@
         <button type="submit">Đăng xuất</button>
     </form> -->
     <!-- Product -->
+     
     <section class="bg0 p-t-23 p-b-140">
+        
         <div class="container">
 
             <div id="loadProduct">
                 @include('products.list')
             </div>
+
+
 
         </div>
     </section>

@@ -10,6 +10,8 @@ use App\Http\Services\CartService;
 use App\Models\Customer;
 use App\Models\Menu;
 use App\Models\Cart;
+use App\Models\Order;
+use App\Models\OrderDetail;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -83,5 +85,15 @@ class ProductController extends Controller
         }
 
         return response()->json([ 'error' => true ]);
+    }
+
+
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+
+        $products = Product::where('name', 'like', '%' . $query . '%')
+                           ->get();
+        return view('admin.product.search', compact('products', 'query'))->with('title', 'Tìm kiếm');
     }
 }

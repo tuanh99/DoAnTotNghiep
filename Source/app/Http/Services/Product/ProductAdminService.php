@@ -10,6 +10,11 @@ use App\Http\Services\CartService;
 use Illuminate\Http\Request;
 use App\Models\Customer;
 use App\Models\Product;
+use App\Models\Order;
+use App\Models\OrderDetail;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+
 use Illuminate\Support\Facades\Session;
 
 class ProductAdminService
@@ -43,13 +48,25 @@ class ProductAdminService
             return redirect()->back()->withInput();
         }
         try {
-            $request->except('_token');
-            Product::create($request->all());
+            // $request->except('_token');
+            // Product::create($request->all());
+            Product::create([
+                'name' => $request->name,
+                'menu_id' => $request->menu_id,
+                'price_cost' => $request->price_cost,
+                'price' => $request->price,
+                'price_sale' => $request->price_sale,//
+                'description' => $request->description,
+                'content' => $request->content,
+                'thumb' => $request->thumb,
+                'stock' => $request->stock,
+                'active' => $request->active,
+            ]);
 
             Session::flash('success', 'Thêm Sản phẩm thành công');
         } catch (\Exception $err) {
             Session::flash('error', 'Thêm Sản phẩm lỗi');
-            \Log::info($err->getMessage());
+            Log::info($err->getMessage());
             return  false;
         }
 
@@ -67,10 +84,10 @@ class ProductAdminService
 
         // Lấy sản phẩm kèm theo tổng số lượng đã bán
     $products = Product::with('menu')
-    ->withCount(['carts as total_sold' => function ($query) {
-        $query->whereHas('customer', function ($query) {
+    ->withCount(['orderDetails as total_sold' => function ($query) {
+        $query->whereHas('order', function ($query) {
             $query->where('status', 'Đã giao thành công');
-        })->select(\DB::raw("SUM(pty)"));
+        })->select(DB::raw("SUM(product_quantity)"));
     }])
         ->orderBy($sortBy, $sortOrder)
         ->paginate(15);
@@ -89,7 +106,7 @@ class ProductAdminService
             Session::flash('success', 'Cập nhật thành công');
         } catch (\Exception $err) {
             Session::flash('error', 'Có lỗi vui lòng thử lại');
-            \Log::info($err->getMessage());
+            Log::info($err->getMessage());
             return false;
         }
         return true;

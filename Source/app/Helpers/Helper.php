@@ -83,10 +83,20 @@ class Helper
         return false;
     }
 
+    // public static function price($price = 0, $priceSale = 0)
+    // {
+    //     if ($priceSale != 0) return number_format($priceSale);
+    //     if ($price != 0)  return number_format($price);
+    //     return '<a href="/lien-he.html">Liên Hệ</a>';
+    // }
+
     public static function price($price = 0, $priceSale = 0)
-    {
-        if ($priceSale != 0) return number_format($priceSale);
-        if ($price != 0)  return number_format($price);
-        return '<a href="/lien-he.html">Liên Hệ</a>';
+{
+    if ($priceSale != 0 && $price != 0) {
+        return '<span style="text-decoration: line-through; margin-right: 5px">' . number_format($price)  . '</span> <div >'   . number_format($priceSale). ' đ <span class="sale-label">(Giảm giá)</span></div>';
     }
+    if ($priceSale != 0) return number_format($priceSale).'đ';
+    if ($price != 0)  return number_format($price).'đ';
+    return '<p>Sản phẩm này hiện đã hết</p>';
+}
 }

@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng ký</title>
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}"> <!-- Đường dẫn tới CSS của Laravel -->
     <style>
         body {
+            background: url('https://www.vietnamworks.com/hrinsider/wp-content/uploads/2023/12/ai-la-nguoi-dam-me-nhung-bau-troi-dem-day-sao-dep-den-nao-long-nao.jpg') no-repeat center center fixed; 
+            background-size: cover;
             background-color: #f5f5f5;
             display: flex;
             justify-content: center;
@@ -16,6 +17,7 @@
             font-family: Arial, sans-serif;
         }
         .register-container {
+            background: rgba(255, 255, 255, 0.5); /* Nền trắng bán trong suốt */
             width: 400px;
             padding: 30px;
             background: white;
@@ -81,13 +83,13 @@
     </style>
 </head>
 <body>
-    <div class="register-container">
+    <div class="register-container" style = "background: rgba(255, 255, 255, 0.7);">
         <div class="register-header">{{ __('Đăng ký') }}</div>
         <form method="POST" action="{{ route('user.register') }}">
             @csrf
 
             <div class="form-group">
-                <label for="name">{{ __('Name') }}</label>
+                <label for="name">{{ __('Tên') }}</label>
                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
                 @error('name')
                     <span class="invalid-feedback" role="alert">
@@ -97,7 +99,7 @@
             </div>
 
             <div class="form-group">
-                <label for="email">{{ __('E-Mail Address') }}</label>
+                <label for="email">{{ __('Email') }}</label>
                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
                 @error('email')
                     <span class="invalid-feedback" role="alert">
@@ -107,7 +109,7 @@
             </div>
 
             <div class="form-group">
-                <label for="password">{{ __('Password') }}</label>
+                <label for="password">{{ __('Mật Khẩu') }}</label>
                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
                 @error('password')
                     <span class="invalid-feedback" role="alert">
@@ -117,16 +119,16 @@
             </div>
 
             <div class="form-group">
-                <label for="password-confirm">{{ __('Confirm Password') }}</label>
+                <label for="password-confirm">{{ __('Xác nhận mật khẩu') }}</label>
                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
             </div>
 
             <button type="submit" class="btn-register">
-                {{ __('Register') }}
+                {{ __('Đăng Ký') }}
             </button>
 
             <a class="login-link" href="{{ route('user.login') }}">
-                {{ __('Already have an account? Login') }}
+                {{ __('Bạn đã có tài khoản? Đăng nhập ngay') }}
             </a>
         </form>
     </div>

@@ -33,12 +33,7 @@
                                     </li>
                                 </ul>
                             </div>
-                            <div class="wrap-slick3-arrows flex-sb-m flex-w">
-                                <button class="arrow-slick3 prev-slick3 slick-arrow" style=""><i
-                                        class="fa fa-angle-left" aria-hidden="true"></i></button>
-                                <button class="arrow-slick3 next-slick3 slick-arrow" style=""><i
-                                        class="fa fa-angle-right" aria-hidden="true"></i></button>
-                            </div>
+                            
 
                             <div class="slick3 gallery-lb slick-initialized slick-slider slick-dotted">
                                 <div class="slick-list draggable">
@@ -52,10 +47,7 @@
                                             <div class="wrap-pic-w pos-relative">
                                                 <img src="{{ $product->thumb }}" alt="IMG-PRODUCT">
 
-                                                <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
-                                                   href="images/product-detail-01.jpg" tabindex="0">
-                                                    <i class="fa fa-expand"></i>
-                                                </a>
+                                                
                                             </div>
                                         </div>
                                     </div>
@@ -74,17 +66,28 @@
                             {{ $title }}
                         </h4>
                         <div class="col">
-                        <strike class = "row cl2">{{ $product->price }} </strike>
+                        <!-- <strike class = "row cl2">{{ $product->price }} </strike> -->
                         <span class="row mtext-106 cl2">
 							{!! \App\Helpers\Helper::price($product->price, $product->price_sale) !!}
 						</span>
                         </div>
-                        <p class="stext-102 cl3 p-t-23">
+                        <!-- <p class="stext-102 cl3 p-t-23">
                             {{ $product->stock }} Sản phẩm có sẵn
-                        </p>
+                        </p> -->
+                        </div>
+                        @if ($product->stock > 0)
+                            <p class="stext-102 cl3 p-t-23">
+                                {{ $product->stock }} Sản phẩm có sẵn
+                            </p>
+                        @else
+                            <p class="stext-102 cl3 p-t-23">
+                                Sản phẩm này hiện đã hết
+                            </p>
+                        @endif
                         <!--  -->
                         <form action="/add-cart" method="post" class="add-to-cart-form">
-    @if ($product->price !== NULL)
+    
+    @if ($product->stock > 0 && $product->price !== NULL)
         <div class="wrap-num-product flex-w m-r-20 m-tb-10">
             <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
                 <i class="fs-16 zmdi zmdi-minus"></i>
@@ -100,6 +103,10 @@
             Thêm vào giỏ hàng
         </button>
         <input type="hidden" name="product_id" value="{{ $product->id }}">
+        @else
+                                <button type="button" class="flex-c-m stext-101 cl0 size-101 bg1 bor1 p-lr-15 trans-04" disabled>
+                                    Thêm vào giỏ hàng
+                                </button>
     @endif
     @csrf
 </form>

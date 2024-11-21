@@ -1,7 +1,7 @@
 @extends('main')
 
 @section('content')
-<div class="container p-t-80">
+<div class="container p-t-80" >
     <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
         <a href="/" class="stext-109 cl8 hov-cl1 trans-04">
             Trang chủ
@@ -9,12 +9,19 @@
         </a>
         <span class="stext-109 cl4">
             Tìm kiếm: {{ $query }}
+            
         </span>
     </div>
 </div>
 
 <div class="container">
-    <div class="row isotope-grid">
+    <div style="margin-bottom: 100px"  class="row isotope-grid">
+        @if ($products->isEmpty())
+            <div   class="col-12 p-t-30">
+                <p class="text-center">Không có kết quả tìm kiếm cho "{{ $query }}"</p>
+    
+            </div>
+        @else
         @foreach($products as $product)
             <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
                 <div class="block2">
@@ -35,6 +42,7 @@
                 </div>
             </div>
         @endforeach
+        @endif
     </div>
 </div>
 @endsection
